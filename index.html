@@ -10,113 +10,162 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #f5f4f0; --surface: #ffffff; --surface-2: #faf9f6; --ink: #1a1a18; --muted: #6a6963; --line: #e7e5de;
-    --accent: #2f4f46; --accent-soft: #e3ece8; --info: #29506f; --info-soft: #e4edf5;
-    --s-lead: #86847c; --s-verified: #2f5d8a; --s-ready: #7a5b9a; --s-applied: #2f6b3f; --s-interview: #a14b2a; --s-closed: #b3b1a9;
-    --radius: 16px; --shadow: 0 1px 2px rgba(20,20,10,.04);
+    --bg: #f6f5f1; --surface: #ffffff; --soft: #faf9f6; --hover: #f2f1ec; --ink: #1a1a18; --muted: #6d6b65; --faint: #98968e; --line: #e8e6df;
+    --accent: #2f4f46; --accent-soft: #e4ece8; --info: #29506f; --info-soft: #e7eef5;
+    --s-lead: #8b897f; --s-verified: #2f5d8a; --s-ready: #7a5b9a; --s-applied: #2f6b3f; --s-interview: #a14b2a; --s-closed: #b8b6ae;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --bg: #131312; --surface: #1c1c1a; --surface-2: #222220; --ink: #ecebe6; --muted: #9c9a91; --line: #2d2d2a;
-      --accent: #8fb8a8; --accent-soft: #22302b; --info: #8fb6d9; --info-soft: #1f2c38;
-      --s-lead: #9c9a91; --s-verified: #7fb0dc; --s-ready: #b79bd6; --s-applied: #7fc08f; --s-interview: #e39a78; --s-closed: #67655f;
+      --bg: #121211; --surface: #1b1b19; --soft: #20201e; --hover: #262624; --ink: #ecebe6; --muted: #a09e95; --faint: #75736b; --line: #2c2c29;
+      --accent: #8fb8a8; --accent-soft: #212e29; --info: #8fb6d9; --info-soft: #1e2a35;
+      --s-lead: #a09e95; --s-verified: #7fb0dc; --s-ready: #b79bd6; --s-applied: #7fc08f; --s-interview: #e39a78; --s-closed: #67655f;
     }
   }
   :root[data-theme="dark"] {
-    --bg: #131312; --surface: #1c1c1a; --surface-2: #222220; --ink: #ecebe6; --muted: #9c9a91; --line: #2d2d2a;
-    --accent: #8fb8a8; --accent-soft: #22302b; --info: #8fb6d9; --info-soft: #1f2c38;
-    --s-lead: #9c9a91; --s-verified: #7fb0dc; --s-ready: #b79bd6; --s-applied: #7fc08f; --s-interview: #e39a78; --s-closed: #67655f;
+    --bg: #121211; --surface: #1b1b19; --soft: #20201e; --hover: #262624; --ink: #ecebe6; --muted: #a09e95; --faint: #75736b; --line: #2c2c29;
+    --accent: #8fb8a8; --accent-soft: #212e29; --info: #8fb6d9; --info-soft: #1e2a35;
+    --s-lead: #a09e95; --s-verified: #7fb0dc; --s-ready: #b79bd6; --s-applied: #7fc08f; --s-interview: #e39a78; --s-closed: #67655f;
   }
   * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body { margin: 0; background: var(--bg); color: var(--ink); font: 400 14.5px/1.55 "Inter", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
-  button, input, select, textarea { font-family: inherit; font-size: inherit; color: inherit; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 400 13.5px/1.5 "Inter", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  button, input, select { font-family: inherit; font-size: inherit; color: inherit; }
+  button { cursor: pointer; }
   a { color: inherit; }
-  .wrap { max-width: 1180px; margin: 0 auto; padding: 32px 20px 72px; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; border-radius: 6px; }
+  .wrap { max-width: 1480px; margin: 0 auto; padding: 20px 24px 56px; }
 
-  /* header */
-  .top { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 22px; }
-  h1 { font: 600 26px/1.15 "Poppins", sans-serif; margin: 0 0 4px; letter-spacing: -0.01em; }
-  .sub { color: var(--muted); font-size: 13.5px; }
-  .ghost { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 6px 14px; cursor: pointer; font-size: 13px; }
-  .ghost:hover { border-color: var(--muted); }
+  /* top bar */
+  .top { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 14px; }
+  .brand { min-width: 0; }
+  h1 { font: 600 18px/1.2 "Poppins", sans-serif; margin: 0; letter-spacing: -0.01em; }
+  .sub { color: var(--muted); font-size: 12.5px; }
+  .grow { flex: 1; }
+  .search { width: 260px; max-width: 100%; border: 1px solid var(--line); background: var(--surface); border-radius: 9px; padding: 7px 11px; }
+  .kbd { font-size: 11px; color: var(--faint); border: 1px solid var(--line); border-radius: 5px; padding: 0 5px; margin-left: -44px; pointer-events: none; }
+  .btn { border: 1px solid var(--line); background: var(--surface); border-radius: 9px; padding: 6px 12px; font-size: 12.5px; }
+  .btn:hover { background: var(--hover); }
+
+  /* stat strip */
+  .strip { display: flex; flex-wrap: wrap; gap: 6px 22px; padding: 10px 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; margin-bottom: 14px; align-items: baseline; }
+  .stat { background: none; border: 0; padding: 0; display: flex; align-items: baseline; gap: 7px; }
+  .stat b { font: 600 17px/1 "Poppins", sans-serif; }
+  .stat span { color: var(--muted); font-size: 12.5px; }
+  .stat:hover span { color: var(--ink); }
+  .strip .upd { margin-left: auto; color: var(--faint); font-size: 12px; }
 
   /* tabs */
-  .tabs { display: flex; gap: 4px; padding: 4px; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; width: max-content; max-width: 100%; overflow-x: auto; margin-bottom: 20px; }
-  .tab { border: 0; background: transparent; padding: 7px 16px; border-radius: 999px; cursor: pointer; color: var(--muted); font-weight: 500; font-size: 13.5px; white-space: nowrap; }
-  .tab[aria-selected="true"] { background: var(--ink); color: var(--bg); }
-  .tab .n { opacity: .6; margin-left: 6px; font-size: 12px; }
+  .tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--line); margin-bottom: 16px; overflow-x: auto; }
+  .tab { border: 0; background: none; padding: 9px 14px; color: var(--muted); font-weight: 500; border-bottom: 2px solid transparent; margin-bottom: -1px; white-space: nowrap; }
+  .tab:hover { color: var(--ink); }
+  .tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--ink); }
+  .tab .n { color: var(--faint); margin-left: 6px; font-size: 12px; }
 
-  /* bento */
-  .bento { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 14px; }
-  .tile { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); min-width: 0; }
-  .c3 { grid-column: span 3; } .c4 { grid-column: span 4; } .c5 { grid-column: span 5; } .c6 { grid-column: span 6; } .c7 { grid-column: span 7; } .c8 { grid-column: span 8; } .c12 { grid-column: span 12; }
-  @media (max-width: 960px) { .c3 { grid-column: span 6; } .c4, .c5, .c6, .c7, .c8 { grid-column: span 12; } }
-  @media (max-width: 520px) { .c3 { grid-column: span 12; } }
-  .eyebrow { font: 600 11px/1 "Poppins", sans-serif; text-transform: uppercase; letter-spacing: .09em; color: var(--muted); margin: 0 0 12px; }
-  .big { font: 600 34px/1 "Poppins", sans-serif; letter-spacing: -0.02em; }
-  .hint { color: var(--muted); font-size: 13px; margin-top: 6px; }
+  /* layout */
+  .cols { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 18px; align-items: start; }
+  @media (max-width: 1000px) { .cols { grid-template-columns: 1fr; } }
+  .stack { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; min-width: 0; }
+  .panel > h2, .panel > summary { font: 600 11px/1 "Poppins", sans-serif; text-transform: uppercase; letter-spacing: .09em; color: var(--muted); margin: 0; padding: 13px 14px; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+  summary::-webkit-details-marker { display: none; }
+  summary { cursor: pointer; }
+  summary::after { content: "+"; font-size: 15px; color: var(--faint); letter-spacing: 0; }
+  details[open] > summary::after { content: "\2212"; }
+  .panel .body { padding: 0 14px 14px; }
+  .panel .body.flush { padding: 0; }
 
-  .callout { background: var(--info-soft); border-color: transparent; display: flex; gap: 14px; }
-  .callout .bar { width: 3px; border-radius: 3px; background: var(--info); flex: none; }
-  .callout h3 { font: 600 14px/1.3 "Poppins", sans-serif; margin: 0 0 6px; color: var(--info); }
-  .callout p { margin: 0; }
+  .note { display: flex; gap: 10px; align-items: flex-start; background: var(--info-soft); border-radius: 12px; padding: 11px 14px; margin-bottom: 14px; color: var(--ink); }
+  .note b { color: var(--info); font-family: "Poppins", sans-serif; font-weight: 600; font-size: 12.5px; white-space: nowrap; }
+  .note button { margin-left: auto; border: 0; background: none; color: var(--muted); font-size: 16px; line-height: 1; }
 
-  .pipe { display: flex; height: 10px; border-radius: 999px; overflow: hidden; background: var(--surface-2); margin: 6px 0 14px; }
-  .pipe span { display: block; height: 100%; }
-  .legend { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; font-size: 13px; }
-  .legend div { display: flex; align-items: center; justify-content: space-between; }
-  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; flex: none; }
-
-  .list { display: flex; flex-direction: column; }
-  .li { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 11px 0; border-top: 1px solid var(--line); }
-  .li:first-child { border-top: 0; padding-top: 0; }
-  .li b { font-weight: 600; }
-  .muted { color: var(--muted); }
-  .small { font-size: 13px; }
-  .pill { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px; font-size: 12px; color: var(--muted); white-space: nowrap; }
+  /* status */
+  .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 7px; flex: none; }
+  select { border: 1px solid var(--line); background: var(--soft); border-radius: 7px; padding: 3px 6px; font-size: 12.5px; }
+  .pill { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 999px; padding: 1px 9px; font-size: 12px; color: var(--muted); white-space: nowrap; }
   .pill.ok { color: var(--s-applied); border-color: color-mix(in srgb, var(--s-applied) 35%, transparent); }
 
   /* controls */
-  .bar-controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 14px; }
-  .chip { border: 1px solid var(--line); background: var(--surface); color: var(--muted); border-radius: 999px; padding: 5px 13px; font-size: 13px; cursor: pointer; }
-  .chip[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); border-color: transparent; font-weight: 600; }
-  .search { margin-left: auto; border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: 7px 12px; min-width: 220px; }
-  .search:focus, select:focus, .chip:focus-visible, .tab:focus-visible, .ghost:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-  select { border: 1px solid var(--line); background: var(--surface-2); border-radius: 8px; padding: 4px 8px; }
+  .controls { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding: 10px 12px; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--surface); border-radius: 12px 12px 0 0; z-index: 2; }
+  .chip { border: 1px solid transparent; background: none; color: var(--muted); border-radius: 999px; padding: 3px 10px; font-size: 12.5px; }
+  .chip:hover { background: var(--hover); }
+  .chip[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+  .chip .n { opacity: .6; margin-left: 4px; }
+  .sep { width: 1px; height: 18px; background: var(--line); margin: 0 4px; }
+  .push { margin-left: auto; display: flex; gap: 6px; align-items: center; color: var(--muted); font-size: 12.5px; }
 
-  /* job + company cards */
-  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; }
-  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
-  .card h3 { font: 600 15px/1.3 "Poppins", sans-serif; margin: 0; }
-  .row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-  .link { color: var(--accent); text-decoration: none; font-size: 13px; font-weight: 500; }
+  /* rows */
+  .row { border-top: 1px solid var(--line); }
+  .row:first-child { border-top: 0; }
+  .rhead { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 10px; padding-right: 12px; }
+  .rmain { display: grid; grid-template-columns: 190px minmax(0, 1.5fr) 110px minmax(0, 1fr) 54px 14px; gap: 12px; align-items: center; text-align: left; background: none; border: 0; padding: 9px 12px; width: 100%; }
+  .rmain:hover { background: var(--hover); }
+  .rmain .co { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .rmain .role, .rmain .loc, .rmain .trk { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .rmain .trk, .rmain .loc, .rmain .dt { color: var(--muted); font-size: 12.5px; }
+  .chev { color: var(--faint); transition: transform .12s; font-size: 15px; }
+  [aria-expanded="true"] .chev { transform: rotate(90deg); }
+  .detail { padding: 4px 14px 14px 14px; background: var(--soft); border-top: 1px dashed var(--line); display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px 18px; }
+  .detail .wide { grid-column: 1 / -1; }
+  .detail dt { font-size: 11px; color: var(--faint); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 1px; }
+  .detail dd { margin: 0; }
+  .link { color: var(--accent); text-decoration: none; font-weight: 500; }
   .link:hover { text-decoration: underline; }
-  .roles { border-top: 1px solid var(--line); padding-top: 8px; display: flex; flex-direction: column; gap: 8px; }
-  .role { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 13.5px; }
-  .empty { padding: 36px 16px; text-align: center; color: var(--muted); border: 1px dashed var(--line); border-radius: var(--radius); }
+  @media (max-width: 860px) {
+    .rmain { grid-template-columns: minmax(0, 1fr) 14px; }
+    .rmain .trk, .rmain .loc, .rmain .dt { display: none; }
+    .rmain .role { grid-column: 1; grid-row: 2; color: var(--muted); }
+    .rmain .chev { grid-row: 1; grid-column: 2; }
+  }
+
+  .empty { padding: 34px 14px; text-align: center; color: var(--muted); }
+
+  /* small lists in side rail */
+  .li { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; padding: 7px 0; border-top: 1px solid var(--line); }
+  .li:first-child { border-top: 0; }
+  .muted { color: var(--muted); }
+  .faint { color: var(--faint); }
+  .small { font-size: 12.5px; }
+  .pipe { display: flex; height: 8px; border-radius: 999px; overflow: hidden; background: var(--soft); margin-bottom: 10px; }
+  .pipe span { height: 100%; display: block; }
+  .legend { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 12px; }
+  .legend button { display: flex; justify-content: space-between; align-items: center; border: 0; background: none; padding: 3px 4px; border-radius: 6px; text-align: left; }
+  .legend button:hover { background: var(--hover); }
+  .check { display: flex; gap: 8px; align-items: flex-start; padding: 5px 0; }
+  .check input { margin-top: 3px; accent-color: var(--accent); }
+  .check.done span { color: var(--faint); text-decoration: line-through; }
+
+  /* companies master-detail */
+  .md { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 18px; align-items: start; }
+  @media (max-width: 900px) { .md { grid-template-columns: 1fr; } }
+  .clist { max-height: calc(100vh - 230px); overflow: auto; }
+  .citem { display: flex; justify-content: space-between; align-items: center; gap: 8px; width: 100%; text-align: left; background: none; border: 0; border-top: 1px solid var(--line); padding: 9px 12px; }
+  .citem:first-child { border-top: 0; }
+  .citem:hover { background: var(--hover); }
+  .citem[aria-current="true"] { background: var(--accent-soft); }
+  .cd h3 { font: 600 16px/1.2 "Poppins", sans-serif; margin: 0 0 2px; }
+  .cd .sec { padding: 12px 14px; border-top: 1px solid var(--line); }
+  .cd .sec h4 { margin: 0 0 8px; font: 600 11px/1 "Poppins", sans-serif; text-transform: uppercase; letter-spacing: .09em; color: var(--muted); }
 
   /* outreach */
-  .tpl { background: var(--surface-2); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; font-size: 13.5px; white-space: pre-wrap; }
-  .tpl-head { display: flex; justify-content: space-between; align-items: center; margin: 14px 0 8px; font-weight: 600; font-family: "Poppins", sans-serif; font-size: 13.5px; }
-  .tpl-head:first-of-type { margin-top: 0; }
-  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
-  th { text-align: left; font: 600 11px/1 "Poppins", sans-serif; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); padding: 0 8px 10px 0; }
-  td { padding: 10px 8px 10px 0; border-top: 1px solid var(--line); vertical-align: top; }
-  .scroll { overflow-x: auto; }
-  footer { margin-top: 28px; color: var(--muted); font-size: 12.5px; }
+  .orow { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1.2fr) 80px 120px; gap: 12px; align-items: center; padding: 9px 12px; border-top: 1px solid var(--line); }
+  .orow.head { border-top: 0; font: 600 11px/1 "Poppins", sans-serif; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); padding-top: 12px; }
+  @media (max-width: 860px) { .orow { grid-template-columns: 1fr 1fr; } .orow.head { display: none; } }
+  .tpl { background: var(--soft); border: 1px solid var(--line); border-radius: 9px; padding: 10px 12px; white-space: pre-wrap; margin-bottom: 8px; }
+  .acc { border-top: 1px solid var(--line); }
+  .acc:first-child { border-top: 0; }
+  .acc > summary { text-transform: none; letter-spacing: 0; font: 500 13px/1.3 "Inter", sans-serif; color: var(--ink); }
+  footer { margin-top: 22px; color: var(--faint); font-size: 12px; }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header class="top">
-    <div>
-      <h1 id="name"></h1>
-      <div class="sub" id="tagline"></div>
-    </div>
-    <button class="ghost" id="theme" type="button">Toggle theme</button>
+    <div class="brand"><h1 id="name"></h1><div class="sub" id="tagline"></div></div>
+    <div class="grow"></div>
+    <input class="search" id="gsearch" type="search" placeholder="Search roles and companies" aria-label="Search roles and companies">
+    <button class="btn" id="theme" type="button">Theme</button>
   </header>
 
+  <section class="strip" id="strip" aria-label="Summary"></section>
   <nav class="tabs" role="tablist" id="tabs"></nav>
   <main id="view"></main>
   <footer id="foot"></footer>
@@ -212,162 +261,198 @@ window.TEMPLATES = [
 
 <script>
 /* ============ STATE + HELPERS ============ */
-const STATUSES = [
-  ["lead", "Lead"], ["verified", "Verified"], ["ready", "Ready"], ["applied", "Applied"], ["interview", "Interview"], ["closed", "Skipped"]
-];
+const STATUSES = [["lead", "Lead"], ["verified", "Verified"], ["ready", "Ready"], ["applied", "Applied"], ["interview", "Interview"], ["closed", "Skipped"]];
 const LABEL = Object.fromEntries(STATUSES);
-const KEY = "chandana-dashboard-v2";
+const OSTAT = ["sent", "accepted", "replied", "referred", "no reply"];
+const KEY = "chandana-dashboard-v3";
 const store = (() => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } })();
+store.j = store.j || {}; store.o = store.o || {}; store.n = store.n || {};
 const persist = () => { try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {} };
-const statusOf = j => store[j.id] || j.status;
-const state = { tab: "overview", status: "all", track: "all", q: "", cq: "" };
+const statusOf = j => store.j[j.id] || j.status;
+const ostatus = (o, i) => store.o[i] || o.status;
+const state = { tab: "overview", status: "all", track: "all", sort: "status", q: "", open: new Set(), company: null, noteHidden: false };
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const col = s => `var(--s-${s})`;
 const fmtDate = d => d ? new Date(d + "T00:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "short" }) : "";
-
+const ORDER = Object.fromEntries(STATUSES.map(([k], i) => [k, ["applied", "interview", "ready", "verified", "lead", "closed"].indexOf(k)]));
 const jobs = () => window.JOBS;
-const applied = () => jobs().filter(j => statusOf(j) === "applied" || statusOf(j) === "interview");
-const byCompany = () => {
+const isApplied = j => ["applied", "interview"].includes(statusOf(j));
+const matches = (j, q) => !q || `${j.company} ${j.role} ${j.location} ${j.track}`.toLowerCase().includes(q.toLowerCase());
+const companies = () => {
   const m = new Map();
   jobs().forEach(j => { if (!m.has(j.company)) m.set(j.company, []); m.get(j.company).push(j); });
-  return [...m.entries()].map(([name, list]) => ({
-    name, list,
-    applied: list.filter(j => ["applied", "interview"].includes(statusOf(j))).length
-  })).sort((a, b) => b.applied - a.applied || b.list.length - a.list.length || a.name.localeCompare(b.name));
+  return [...m.entries()].map(([name, list]) => ({ name, list, applied: list.filter(isApplied).length }))
+    .sort((a, b) => b.applied - a.applied || b.list.length - a.list.length || a.name.localeCompare(b.name));
 };
 
 /* ============ COMPONENTS ============ */
 const Dot = s => `<span class="dot" style="background:${col(s)}"></span>`;
+const StatusSelect = j => `<label style="display:flex;align-items:center">${Dot(statusOf(j))}<select data-job="${j.id}" aria-label="Status for ${esc(j.role)}">${STATUSES.map(([k, l]) => `<option value="${k}"${k === statusOf(j) ? " selected" : ""}>${l}</option>`).join("")}</select></label>`;
 
-const StatusSelect = j => `<label class="row" style="gap:6px">${Dot(statusOf(j))}<select data-job="${j.id}" aria-label="Status for ${esc(j.role)}">${STATUSES.map(([k, l]) => `<option value="${k}"${k === statusOf(j) ? " selected" : ""}>${l}</option>`).join("")}</select></label>`;
-
-const Stat = (label, value, hint) => `<section class="tile c3"><p class="eyebrow">${label}</p><div class="big">${value}</div><div class="hint">${hint}</div></section>`;
-
-const Callout = n => `<section class="tile callout c8"><div class="bar"></div><div><h3>${esc(n.title)}</h3><p>${esc(n.body)}</p></div></section>`;
-
-const Pipeline = () => {
-  const total = jobs().length || 1;
-  const counts = STATUSES.map(([k, l]) => [k, l, jobs().filter(j => statusOf(j) === k).length]);
-  return `<section class="tile c4"><p class="eyebrow">Pipeline</p>
-    <div class="pipe" role="img" aria-label="Status split">${counts.map(([k, , n]) => n ? `<span style="width:${(n / total) * 100}%;background:${col(k)}"></span>` : "").join("")}</div>
-    <div class="legend">${counts.map(([k, l, n]) => `<div><span>${Dot(k)}${l}</span><b>${n}</b></div>`).join("")}</div></section>`;
+const Detail = j => {
+  const related = OUTREACH.filter(o => o.company === j.company).length;
+  return `<dl class="detail">
+    <div class="wide"><dt>Notes</dt><dd>${esc(j.note || "None")}</dd></div>
+    <div><dt>Type</dt><dd>${esc(j.type)}</dd></div>
+    <div><dt>Location</dt><dd>${esc(j.location)}</dd></div>
+    <div><dt>Applied</dt><dd>${j.date ? fmtDate(j.date) + (j.via ? " via " + esc(j.via) : "") : "Not yet"}</dd></div>
+    <div><dt>Resume</dt><dd>${esc(j.resume || "Not chosen")}</dd></div>
+    <div><dt>People messaged here</dt><dd>${related}</dd></div>
+    <div><dt>Posting</dt><dd><a class="link" href="${j.url}" target="_blank" rel="noopener">Open</a></dd></div>
+  </dl>`;
 };
 
-const Recent = () => {
-  const rows = applied().sort((a, b) => (b.date || "").localeCompare(a.date || ""));
-  return `<section class="tile c6"><p class="eyebrow">Applied</p><div class="list">${rows.length ? rows.map(j => `
-    <div class="li"><div><b>${esc(j.company)}</b><div class="small muted">${esc(j.role)}</div></div>
-    <div style="text-align:right"><span class="pill ok">${fmtDate(j.date)}</span><div class="small muted" style="margin-top:4px">${esc(j.resume || "")} resume</div></div></div>`).join("") : `<div class="muted">Nothing yet.</div>`}</div></section>`;
+const JobRow = (j, withSelect = true) => {
+  const open = state.open.has(j.id);
+  return `<div class="row">
+    <div class="rhead">
+      <button class="rmain" type="button" data-toggle="${j.id}" aria-expanded="${open}">
+        <span class="co">${esc(j.company)}</span>
+        <span class="role">${esc(j.role)}</span>
+        <span class="trk">${esc(j.track)}</span>
+        <span class="loc">${esc(j.location)}</span>
+        <span class="dt">${fmtDate(j.date)}</span>
+        <span class="chev">&rsaquo;</span>
+      </button>
+      ${withSelect ? StatusSelect(j) : ""}
+    </div>${open ? Detail(j) : ""}</div>`;
 };
-
-const Next = () => `<section class="tile c6"><p class="eyebrow">Next actions</p><div class="list">${NEXT.map(t => `<div class="li"><span>${esc(t)}</span></div>`).join("")}</div></section>`;
-
-const Resumes = () => `<section class="tile c4"><p class="eyebrow">Resume versions</p><div class="list">${RESUMES.map(r => `<div class="li"><div><b>${esc(r.name)}</b><div class="small muted">${esc(r.use)}</div></div></div>`).join("")}</div></section>`;
-
-const Alerts = () => `<section class="tile c4"><p class="eyebrow">LinkedIn alerts</p><div class="list">${ALERTS.map(a => `<div class="li"><div><span>${esc(a.q)}</span>${a.note ? `<div class="small muted">${esc(a.note)}</div>` : ""}</div><span class="pill ${a.on ? "ok" : ""}">${a.on ? "On" : "Check"}</span></div>`).join("")}</div></section>`;
-
-const Profile = () => `<section class="tile c4"><p class="eyebrow">Profile</p>
-  <div class="list">${PROFILE.tracks.map(t => `<div class="li"><div><b>${esc(t.name)}</b><div class="small muted">${esc(t.detail)}</div></div></div>`).join("")}</div>
-  <div style="margin-top:12px">${PROFILE.links.map(l => `<a class="link" style="margin-right:14px" href="${l.url}" target="_blank" rel="noopener">${esc(l.label)}</a>`).join("")}</div></section>`;
-
-const JobCard = j => `<article class="card">
-  <div class="row"><h3>${esc(j.company)}</h3>${StatusSelect(j)}</div>
-  <div>${esc(j.role)}</div>
-  <div class="small muted">${esc(j.type)} · ${esc(j.track)} · ${esc(j.location)}</div>
-  <div class="small muted">${esc(j.note)}</div>
-  <div class="row"><span class="small muted">${j.date ? "Applied " + fmtDate(j.date) + (j.resume ? ", " + esc(j.resume) + " resume" : "") : ""}</span><a class="link" href="${j.url}" target="_blank" rel="noopener">Open posting</a></div>
-</article>`;
-
-const CompanyCard = c => `<article class="card">
-  <div class="row"><h3>${esc(c.name)}</h3><span class="pill ${c.applied ? "ok" : ""}">${c.applied} applied of ${c.list.length}</span></div>
-  <div class="roles">${c.list.map(j => `<div class="role"><span>${esc(j.role)}</span><span class="row" style="gap:6px">${Dot(statusOf(j))}<span class="small muted">${LABEL[statusOf(j)]}</span></span></div>`).join("")}</div>
-</article>`;
 
 /* ============ VIEWS ============ */
-const Overview = () => {
-  const a = applied();
-  const companies = new Set(a.map(j => j.company)).size;
-  const sent = OUTREACH.filter(o => o.status !== "drafted").length;
-  return `<div class="bento">
-    ${Stat("Applied", a.length, `${jobs().length} roles tracked`)}
-    ${Stat("Companies", companies, "with at least one application")}
-    ${Stat("Interviews", jobs().filter(j => statusOf(j) === "interview").length, "none yet")}
-    ${Stat("Outreach sent", sent, "connection notes sent")}
-    ${NOTES.map(Callout).join("")}
-    ${Pipeline()}
-    ${Recent()}
-    ${Next()}
-    ${Resumes()}
-    ${Alerts()}
-    ${Profile()}
-  </div>`;
-};
+function Strip() {
+  const a = jobs().filter(isApplied).length;
+  const cos = new Set(jobs().filter(isApplied).map(j => j.company)).size;
+  const leads = jobs().filter(j => ["lead", "verified", "ready"].includes(statusOf(j))).length;
+  const sent = OUTREACH.length;
+  const acc = OUTREACH.filter((o, i) => ["accepted", "replied", "referred"].includes(ostatus(o, i))).length;
+  const S = (n, l, act) => `<button class="stat" type="button" data-go="${act}"><b>${n}</b><span>${l}</span></button>`;
+  $("#strip").innerHTML = S(a, "applied", "applied") + S(cos, "companies", "companies") + S(sent, "messages sent", "outreach") + S(acc, "accepted", "outreach") + S(leads, "leads to watch", "lead") + `<span class="upd">Updated ${esc(META.updated)}</span>`;
+}
 
-const Jobs = () => {
-  const q = state.q.trim().toLowerCase();
-  const tracks = ["all", ...new Set(jobs().map(j => j.track))];
-  const list = jobs().filter(j => (state.status === "all" || statusOf(j) === state.status) && (state.track === "all" || j.track === state.track) && (!q || `${j.company} ${j.role} ${j.location}`.toLowerCase().includes(q)));
-  const chip = (g, v, l) => `<button class="chip" type="button" data-g="${g}" data-v="${v}" aria-pressed="${state[g] === v}">${esc(l)}</button>`;
-  return `<div class="bar-controls">
-      ${chip("status", "all", "All")}${STATUSES.map(([k, l]) => chip("status", k, l)).join("")}
-      <span style="width:6px"></span>${tracks.map(t => chip("track", t, t === "all" ? "Any track" : t)).join("")}
-      <input class="search" id="q" type="search" placeholder="Search roles" value="${esc(state.q)}" aria-label="Search roles">
+function Overview() {
+  const total = jobs().length || 1;
+  const counts = STATUSES.map(([k, l]) => [k, l, jobs().filter(j => statusOf(j) === k).length]);
+  const applied = jobs().filter(isApplied).sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+  const watch = jobs().filter(j => ["lead", "verified", "ready"].includes(statusOf(j)));
+  return `
+  ${state.noteHidden ? "" : NOTES.map(n => `<div class="note"><b>${esc(n.title)}</b><span>${esc(n.body)}</span><button type="button" data-hidenote aria-label="Dismiss note">&times;</button></div>`).join("")}
+  <div class="cols">
+    <div class="stack">
+      <section class="panel"><h2>Applications <span class="faint">${applied.length}</span></h2><div class="body flush">${applied.length ? applied.map(j => JobRow(j, false)).join("") : `<div class="empty">Nothing yet.</div>`}</div></section>
+      <details class="panel" open><summary>Leads to watch <span class="faint">${watch.length}</span></summary><div class="body flush">${watch.map(j => JobRow(j)).join("") || `<div class="empty">No open leads.</div>`}</div></details>
     </div>
-    <div class="cards">${list.length ? list.map(JobCard).join("") : ""}</div>${list.length ? "" : `<div class="empty">Nothing matches these filters.</div>`}`;
-};
+    <div class="stack">
+      <section class="panel"><h2>Pipeline</h2><div class="body">
+        <div class="pipe">${counts.map(([k, , n]) => n ? `<span style="width:${(n / total) * 100}%;background:${col(k)}"></span>` : "").join("")}</div>
+        <div class="legend">${counts.map(([k, l, n]) => `<button type="button" data-go="${k}"><span>${Dot(k)}${l}</span><b>${n}</b></button>`).join("")}</div>
+      </div></section>
+      <section class="panel"><h2>Next actions</h2><div class="body">${NEXT.map((t, i) => `<label class="check ${store.n[i] ? "done" : ""}"><input type="checkbox" data-next="${i}" ${store.n[i] ? "checked" : ""}><span>${esc(t)}</span></label>`).join("")}</div></section>
+      <details class="panel"><summary>LinkedIn alerts</summary><div class="body">${ALERTS.map(a => `<div class="li"><span>${esc(a.q)}</span><span class="pill ${a.on ? "ok" : ""}">${a.on ? "On" : "Check"}</span></div>`).join("")}</div></details>
+      <details class="panel"><summary>Resume versions</summary><div class="body">${RESUMES.map(r => `<div class="li"><div><b>${esc(r.name)}</b><div class="small muted">${esc(r.use)}</div></div></div>`).join("")}</div></details>
+      <details class="panel"><summary>Profile</summary><div class="body">${PROFILE.tracks.map(t => `<div class="li"><div><b>${esc(t.name)}</b><div class="small muted">${esc(t.detail)}</div></div></div>`).join("")}<div style="margin-top:8px">${PROFILE.links.map(l => `<a class="link" style="margin-right:14px" href="${l.url}" target="_blank" rel="noopener">${esc(l.label)}</a>`).join("")}</div></div></details>
+    </div>
+  </div>`;
+}
 
-const Companies = () => {
-  const q = state.cq.trim().toLowerCase();
-  const list = byCompany().filter(c => !q || c.name.toLowerCase().includes(q) || c.list.some(j => j.role.toLowerCase().includes(q)));
-  return `<div class="bar-controls"><span class="muted small">${list.length} companies</span>
-      <input class="search" id="cq" type="search" placeholder="Search companies or roles" value="${esc(state.cq)}" aria-label="Search companies"></div>
-    <div class="cards">${list.map(CompanyCard).join("")}</div>${list.length ? "" : `<div class="empty">No company matches.</div>`}`;
-};
+function Jobs() {
+  const tracks = ["all", ...new Set(jobs().map(j => j.track))];
+  const cnt = k => k === "all" ? jobs().length : jobs().filter(j => statusOf(j) === k).length;
+  const chip = (g, v, l, n) => `<button class="chip" type="button" data-g="${g}" data-v="${v}" aria-pressed="${state[g] === v}">${esc(l)}${n != null ? `<span class="n">${n}</span>` : ""}</button>`;
+  return `<section class="panel">
+    <div class="controls">
+      ${chip("status", "all", "All", cnt("all"))}${STATUSES.map(([k, l]) => chip("status", k, l, cnt(k))).join("")}
+      <span class="sep"></span>${tracks.map(t => chip("track", t, t === "all" ? "Any track" : t)).join("")}
+      <span class="push">Sort <select id="sort" aria-label="Sort"><option value="status">Status</option><option value="recent">Recent</option><option value="company">Company</option></select>
+      <button class="btn" type="button" data-expand>Expand all</button></span>
+    </div>
+    <div id="jobsList"></div></section>`;
+}
+function JobsList() {
+  let list = jobs().filter(j => (state.status === "all" || statusOf(j) === state.status) && (state.track === "all" || j.track === state.track) && matches(j, state.q));
+  const by = { status: (a, b) => ORDER[statusOf(a)] - ORDER[statusOf(b)] || a.company.localeCompare(b.company), recent: (a, b) => (b.date || "").localeCompare(a.date || "") || a.company.localeCompare(b.company), company: (a, b) => a.company.localeCompare(b.company) };
+  list.sort(by[state.sort]);
+  $("#jobsList").innerHTML = list.length ? list.map(j => JobRow(j)).join("") : `<div class="empty">Nothing matches these filters.</div>`;
+  const s = $("#sort"); if (s) s.value = state.sort;
+}
 
-const Outreach = () => {
-  const targets = byCompany().filter(c => c.applied);
-  const rows = OUTREACH.length ? `<div class="scroll"><table><thead><tr><th>Person</th><th>Company</th><th>Role applied</th><th>Channel</th><th>Status</th><th>Date</th></tr></thead><tbody>
-    ${OUTREACH.map(o => `<tr><td><b>${esc(o.name)}</b><div class="small muted">${esc(o.title)}</div></td><td>${esc(o.company)}</td><td>${esc(o.role)}</td><td>${esc(o.channel)}</td><td><span class="pill ${o.status === "replied" || o.status === "referred" ? "ok" : ""}">${esc(o.status)}</span></td><td>${fmtDate(o.date)}</td></tr>`).join("")}
-    </tbody></table></div>` : `<div class="empty">No messages sent yet. Targets and templates are ready.</div>`;
-  return `<div class="bento">
-    <section class="tile c7"><p class="eyebrow">Tracker</p>${rows}</section>
-    <section class="tile c5"><p class="eyebrow">Who to reach at each company</p><div class="list">
-      ${targets.map(c => `<div class="li"><div><b>${esc(c.name)}</b><div class="small muted">Talent acquisition, engineering managers, GITAM alumni</div></div><span class="pill">${c.applied} role${c.applied > 1 ? "s" : ""}</span></div>`).join("")}
-    </div></section>
-    <section class="tile c12"><p class="eyebrow">Message templates</p>
-      ${TEMPLATES.map((t, i) => `<div class="tpl-head"><span>${esc(t.name)}</span><button class="ghost" type="button" data-copy="${i}">Copy</button></div><div class="tpl">${esc(t.body)}</div>`).join("")}
-    </section></div>`;
-};
+function Companies() {
+  const all = companies().filter(c => !state.q || c.name.toLowerCase().includes(state.q.toLowerCase()) || c.list.some(j => matches(j, state.q)));
+  if (!all.find(c => c.name === state.company)) state.company = all[0] ? all[0].name : null;
+  const sel = all.find(c => c.name === state.company);
+  const msgs = sel ? OUTREACH.map((o, i) => [o, i]).filter(([o]) => o.company === sel.name || (sel.name.startsWith(o.company) || o.company.startsWith(sel.name))) : [];
+  return `<div class="md">
+    <section class="panel"><h2>${all.length} companies</h2><div class="body flush clist">${all.map(c => `<button class="citem" type="button" data-company="${esc(c.name)}" aria-current="${c.name === state.company}"><span><b>${esc(c.name)}</b><div class="small muted">${c.list.length} role${c.list.length > 1 ? "s" : ""}</div></span><span class="pill ${c.applied ? "ok" : ""}">${c.applied} applied</span></button>`).join("") || `<div class="empty">No match.</div>`}</div></section>
+    <section class="panel cd">${sel ? `<div class="sec"><h3>${esc(sel.name)}</h3><div class="muted small">${sel.applied} applied of ${sel.list.length} tracked, ${msgs.length} message${msgs.length === 1 ? "" : "s"} sent</div></div>
+      <div class="sec" style="padding:0"><div style="padding:12px 14px 4px"><h4 style="margin:0;font:600 11px/1 Poppins,sans-serif;text-transform:uppercase;letter-spacing:.09em;color:var(--muted)">Roles</h4></div>${sel.list.map(j => JobRow(j)).join("")}</div>
+      <div class="sec"><h4>Outreach</h4>${msgs.length ? msgs.map(([o, i]) => `<div class="li"><div><b>${esc(o.name)}</b><div class="small muted">${esc(o.role)}, ${fmtDate(o.date)}</div></div><span class="pill">${esc(ostatus(o, i))}</span></div>`).join("") : `<div class="muted small">No messages sent here yet.</div>`}</div>` : `<div class="empty">Select a company.</div>`}</section>
+  </div>`;
+}
+
+function Outreach() {
+  const rows = OUTREACH.map((o, i) => [o, i]).filter(([o]) => !state.q || `${o.company} ${o.name} ${o.role}`.toLowerCase().includes(state.q.toLowerCase()));
+  const targets = companies().filter(c => c.applied);
+  return `<div class="cols">
+    <div class="stack">
+      <section class="panel"><h2>Messages <span class="faint">${rows.length}</span></h2><div class="body flush">
+        <div class="orow head"><span>Person</span><span>Company</span><span>For</span><span>Date</span><span>Status</span></div>
+        ${rows.length ? rows.map(([o, i]) => `<div class="orow"><span><b>${esc(o.name)}</b><div class="small muted">${esc(o.channel)}</div></span><span>${esc(o.company)}</span><span class="muted">${esc(o.role)}</span><span class="muted">${fmtDate(o.date)}</span><select data-ostat="${i}" aria-label="Status">${OSTAT.map(s => `<option${s === ostatus(o, i) ? " selected" : ""}>${s}</option>`).join("")}</select></div>`).join("") : `<div class="empty">No messages sent yet.</div>`}
+      </div></section>
+    </div>
+    <div class="stack">
+      <details class="panel" open><summary>Message templates</summary><div class="body flush">${TEMPLATES.map((t, i) => `<details class="acc"><summary>${esc(t.name)}</summary><div class="body"><div class="tpl">${esc(t.body)}</div><button class="btn" type="button" data-copy="${i}">Copy</button></div></details>`).join("")}</div></details>
+      <details class="panel"><summary>Who to reach</summary><div class="body">${targets.map(c => `<div class="li"><div><b>${esc(c.name)}</b><div class="small muted">Engineers, hiring managers, GITAM alumni</div></div><span class="pill">${c.applied}</span></div>`).join("")}</div></details>
+    </div>
+  </div>`;
+}
 
 const VIEWS = { overview: Overview, jobs: Jobs, companies: Companies, outreach: Outreach };
 
 /* ============ SHELL ============ */
 function renderTabs() {
-  const counts = { jobs: jobs().length, companies: byCompany().length, outreach: OUTREACH.length };
+  const n = { jobs: jobs().length, companies: companies().length, outreach: OUTREACH.length };
   $("#tabs").innerHTML = [["overview", "Overview"], ["jobs", "Jobs"], ["companies", "Companies"], ["outreach", "Outreach"]]
-    .map(([k, l]) => `<button class="tab" role="tab" type="button" data-tab="${k}" aria-selected="${state.tab === k}">${l}${counts[k] != null ? `<span class="n">${counts[k]}</span>` : ""}</button>`).join("");
+    .map(([k, l]) => `<button class="tab" role="tab" type="button" data-tab="${k}" aria-selected="${state.tab === k}">${l}${n[k] != null ? `<span class="n">${n[k]}</span>` : ""}</button>`).join("");
 }
 function render() {
-  renderTabs();
+  Strip(); renderTabs();
   $("#view").innerHTML = VIEWS[state.tab]();
-  const active = document.activeElement;
+  if (state.tab === "jobs") JobsList();
 }
-function setTab(t) { state.tab = VIEWS[t] ? t : "overview"; history.replaceState(null, "", "#" + state.tab); render(); }
+function setTab(t) { state.tab = VIEWS[t] ? t : "overview"; history.replaceState(null, "", "#" + state.tab); render(); window.scrollTo(0, 0); }
+function go(a) {
+  if (a === "companies" || a === "outreach") return setTab(a);
+  if (a === "applied" || LABEL[a]) { state.status = a; state.track = "all"; return setTab("jobs"); }
+}
 
 document.addEventListener("click", e => {
+  const g = e.target.closest("[data-go]"); if (g) return go(g.dataset.go);
   const t = e.target.closest("[data-tab]"); if (t) return setTab(t.dataset.tab);
+  if (e.target.closest("[data-hidenote]")) { state.noteHidden = true; return render(); }
   const c = e.target.closest(".chip"); if (c) { state[c.dataset.g] = c.dataset.v; return render(); }
+  const tg = e.target.closest("[data-toggle]");
+  if (tg) { const id = +tg.dataset.toggle; state.open.has(id) ? state.open.delete(id) : state.open.add(id); const y = window.scrollY; render(); window.scrollTo(0, y); return; }
+  if (e.target.closest("[data-expand]")) { const list = jobs().filter(j => (state.status === "all" || statusOf(j) === state.status) && (state.track === "all" || j.track === state.track) && matches(j, state.q)); const all = list.every(j => state.open.has(j.id)); list.forEach(j => all ? state.open.delete(j.id) : state.open.add(j.id)); return render(); }
+  const co = e.target.closest("[data-company]"); if (co) { state.company = co.dataset.company; return render(); }
   const cp = e.target.closest("[data-copy]");
-  if (cp) { const body = TEMPLATES[+cp.dataset.copy].body; try { navigator.clipboard.writeText(body); cp.textContent = "Copied"; setTimeout(() => cp.textContent = "Copy", 1200); } catch (x) {} }
+  if (cp) { try { navigator.clipboard.writeText(TEMPLATES[+cp.dataset.copy].body); cp.textContent = "Copied"; setTimeout(() => cp.textContent = "Copy", 1200); } catch (x) {} }
 });
 document.addEventListener("change", e => {
-  const s = e.target.closest("select[data-job]"); if (s) { store[s.dataset.job] = s.value; persist(); render(); }
+  const s = e.target.closest("select[data-job]"); if (s) { store.j[s.dataset.job] = s.value; persist(); const y = window.scrollY; render(); window.scrollTo(0, y); return; }
+  const o = e.target.closest("select[data-ostat]"); if (o) { store.o[o.dataset.ostat] = o.value; persist(); render(); return; }
+  const n = e.target.closest("input[data-next]"); if (n) { store.n[n.dataset.next] = n.checked; persist(); render(); return; }
+  if (e.target.id === "sort") { state.sort = e.target.value; JobsList(); }
 });
-document.addEventListener("input", e => {
-  if (e.target.id === "q") { state.q = e.target.value; const pos = e.target.selectionStart; render(); const n = $("#q"); n.focus(); n.setSelectionRange(pos, pos); }
-  if (e.target.id === "cq") { state.cq = e.target.value; const pos = e.target.selectionStart; render(); const n = $("#cq"); n.focus(); n.setSelectionRange(pos, pos); }
+$("#gsearch").addEventListener("input", e => {
+  state.q = e.target.value;
+  if (state.q && state.tab === "overview") return setTab("jobs");
+  if (state.tab === "jobs") JobsList(); else render();
+  $("#gsearch").focus();
+});
+document.addEventListener("keydown", e => {
+  if (e.key === "/" && document.activeElement.tagName !== "INPUT" && document.activeElement.tagName !== "SELECT") { e.preventDefault(); $("#gsearch").focus(); }
+  if (e.key === "Escape") { state.q = ""; $("#gsearch").value = ""; $("#gsearch").blur(); render(); }
 });
 $("#theme").onclick = () => {
   const el = document.documentElement;
@@ -377,7 +462,7 @@ $("#theme").onclick = () => {
 
 $("#name").textContent = PROFILE.name;
 $("#tagline").textContent = `${PROFILE.title}, graduating ${PROFILE.grad}, CGPA ${PROFILE.cgpa}`;
-$("#foot").textContent = `Last updated ${META.updated}. Status edits made here are saved in this browser only.`;
+$("#foot").textContent = "Press / to search, Esc to clear. Status edits and checkboxes are saved in this browser only.";
 setTab((location.hash || "").replace("#", "") || "overview");
 </script>
 </body>
