@@ -268,7 +268,25 @@
     .side, .cust, .prepbar, .wc, .note button { display: none !important; }
     .app { display: block; } body { background: #fff; } .main { max-width: none; padding: 0; }
     .panel, .story { break-inside: avoid; } .w { grid-column: span 12 !important; }
-  }</style>
+  }  /* accordions */
+  .acc > summary { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 11px 14px; }
+  .acc > summary:hover { background: var(--hover); }
+  .qa details.q { border-top: 1px solid var(--line); }
+  .qa details.q:first-child { border-top: 0; }
+  .q > summary { display: flex; align-items: center; gap: 12px; padding: 13px 14px; cursor: pointer; list-style: none; }
+  details[open].q > summary::after, .q > summary::after { content: none; }
+  .q > summary:hover { background: var(--hover); }
+  .q[open] > summary { background: var(--soft); }
+  .qn { flex: none; font: 600 11px "Poppins", sans-serif; color: var(--accent); background: var(--accent-soft); border-radius: 6px; padding: 2px 8px; }
+  .qt { flex: 1; font-weight: 500; font-size: 13.5px; }
+  .qc { flex: none; width: 7px; height: 7px; border-right: 2px solid var(--faint); border-bottom: 2px solid var(--faint); transform: rotate(-45deg); transition: transform .15s; margin-right: 4px; }
+  .q[open] > summary .qc { transform: rotate(45deg); border-color: var(--accent); }
+  .beats { list-style: none; margin: 0; padding: 2px 14px 14px 14px; background: var(--soft); }
+  .beats li { display: flex; gap: 10px; padding: 6px 0 6px 0; align-items: flex-start; position: relative; }
+  .beats li:not(:last-child)::before { content: ""; position: absolute; left: 10px; top: 28px; bottom: -6px; width: 1px; background: var(--line); }
+  .beats li > span { flex: none; width: 21px; height: 21px; border-radius: 50%; background: var(--surface); border: 1px solid var(--line); display: grid; place-items: center; font-size: 11px; color: var(--muted); z-index: 1; }
+  .beats li > div { padding-top: 1px; }
+  .qhint { padding: 9px 14px; border-top: 1px solid var(--line); color: var(--faint); font-size: 12px; }</style>
 </head>
 <body>
 <div class="app">
@@ -846,7 +864,7 @@ function Prep() {
       <div class="chips">${s.stack.map(x => `<span class="chip2">${esc(x)}</span>`).join("")}${s.fill.map(x => `<span class="chip2 fill" title="Not on your resume. Fill in your own number">Add: ${esc(x)}</span>`).join("")}</div>
       <details class="more"><summary>Likely follow ups</summary><ul class="bul">${s.ask.map(q => `<li>${esc(q)}</li>`).join("")}<li class="muted">${esc(s.tip)}</li></ul></details></article>`; }).join("")}</div>`;
 
-  const qa = `<div class="body flush">${p.qa.map(x => `<details class="acc"><summary>${esc(x.q)}</summary><div class="body"><ul class="bul">${x.a.map(a => `<li>${esc(a)}</li>`).join("")}</ul></div></details>`).join("")}</div>`;
+  const qa = `<div class="body flush qa">${p.qa.map((x, i) => `<details class="q"${i === 0 ? " open" : ""}><summary><span class="qn">Q${i + 1}</span><span class="qt">${esc(x.q)}</span><span class="qc" aria-hidden="true"></span></summary><ol class="beats">${x.a.map((a, k) => `<li><span>${k + 1}</span><div>${esc(a)}</div></li>`).join("")}</ol></details>`).join("")}<div class="qhint">Answer in this order, one beat at a time.</div></div>`;
 
   const gaps = p.gaps.length ? `<div class="wpad">${p.gaps.map(g => `<div class="gapc"><b>${esc(g.g)}</b><div class="small muted">${esc(g.p)}</div></div>`).join("")}</div>` : `<div class="empty small">No gaps listed.</div>`;
   const ask = `<div class="wpad"><ul class="bul">${p.ask.map(a => `<li>${esc(a)}</li>`).join("")}</ul></div>`;
