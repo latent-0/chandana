@@ -10,19 +10,19 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #f6f5f1; --surface: #ffffff; --soft: #faf9f6; --hover: #f2f1ec; --ink: #1a1a18; --muted: #6d6b65; --faint: #98968e; --line: #e8e6df;
+    --bg: #f6f5f1; --side: #efede7; --surface: #ffffff; --soft: #faf9f6; --hover: #f1f0eb; --ink: #1a1a18; --muted: #6d6b65; --faint: #98968e; --line: #e8e6df;
     --accent: #2f4f46; --accent-soft: #e4ece8; --info: #29506f; --info-soft: #e7eef5;
     --s-lead: #8b897f; --s-verified: #2f5d8a; --s-ready: #7a5b9a; --s-applied: #2f6b3f; --s-interview: #a14b2a; --s-closed: #b8b6ae;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --bg: #121211; --surface: #1b1b19; --soft: #20201e; --hover: #262624; --ink: #ecebe6; --muted: #a09e95; --faint: #75736b; --line: #2c2c29;
+      --bg: #121211; --side: #171715; --surface: #1b1b19; --soft: #20201e; --hover: #262624; --ink: #ecebe6; --muted: #a09e95; --faint: #75736b; --line: #2c2c29;
       --accent: #8fb8a8; --accent-soft: #212e29; --info: #8fb6d9; --info-soft: #1e2a35;
       --s-lead: #a09e95; --s-verified: #7fb0dc; --s-ready: #b79bd6; --s-applied: #7fc08f; --s-interview: #e39a78; --s-closed: #67655f;
     }
   }
   :root[data-theme="dark"] {
-    --bg: #121211; --surface: #1b1b19; --soft: #20201e; --hover: #262624; --ink: #ecebe6; --muted: #a09e95; --faint: #75736b; --line: #2c2c29;
+    --bg: #121211; --side: #171715; --surface: #1b1b19; --soft: #20201e; --hover: #262624; --ink: #ecebe6; --muted: #a09e95; --faint: #75736b; --line: #2c2c29;
     --accent: #8fb8a8; --accent-soft: #212e29; --info: #8fb6d9; --info-soft: #1e2a35;
     --s-lead: #a09e95; --s-verified: #7fb0dc; --s-ready: #b79bd6; --s-applied: #7fc08f; --s-interview: #e39a78; --s-closed: #67655f;
   }
@@ -32,37 +32,46 @@
   button { cursor: pointer; }
   a { color: inherit; }
   :focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; border-radius: 6px; }
-  .wrap { max-width: 1480px; margin: 0 auto; padding: 20px 24px 56px; }
 
-  /* top bar */
-  .top { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 14px; }
-  .brand { min-width: 0; }
-  h1 { font: 600 18px/1.2 "Poppins", sans-serif; margin: 0; letter-spacing: -0.01em; }
-  .sub { color: var(--muted); font-size: 12.5px; }
-  .grow { flex: 1; }
-  .search { width: 260px; max-width: 100%; border: 1px solid var(--line); background: var(--surface); border-radius: 9px; padding: 7px 11px; }
-  .kbd { font-size: 11px; color: var(--faint); border: 1px solid var(--line); border-radius: 5px; padding: 0 5px; margin-left: -44px; pointer-events: none; }
+  /* app shell */
+  .app { display: grid; grid-template-columns: 224px minmax(0, 1fr); min-height: 100vh; }
+  .side { background: var(--side); border-right: 1px solid var(--line); padding: 18px 12px; display: flex; flex-direction: column; gap: 14px; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+  .brand { padding: 0 8px; }
+  h1 { font: 600 15px/1.25 "Poppins", sans-serif; margin: 0; letter-spacing: -0.01em; }
+  .sub { color: var(--muted); font-size: 12px; }
+  .search { width: 100%; border: 1px solid var(--line); background: var(--surface); border-radius: 9px; padding: 7px 10px; }
+  .nav { display: flex; flex-direction: column; gap: 2px; }
+  .nav button { display: flex; justify-content: space-between; align-items: center; width: 100%; text-align: left; border: 0; background: none; border-radius: 8px; padding: 8px 10px; color: var(--muted); font-weight: 500; }
+  .nav button:hover { background: var(--hover); color: var(--ink); }
+  .nav button[aria-current="page"] { background: var(--surface); color: var(--ink); box-shadow: 0 0 0 1px var(--line); }
+  .nav .n { font-size: 12px; color: var(--faint); font-weight: 400; }
+  .side .foot { margin-top: auto; display: flex; flex-direction: column; gap: 8px; padding: 0 4px; color: var(--faint); font-size: 12px; }
   .btn { border: 1px solid var(--line); background: var(--surface); border-radius: 9px; padding: 6px 12px; font-size: 12.5px; }
   .btn:hover { background: var(--hover); }
+  .main { padding: 22px 28px 56px; min-width: 0; max-width: 1280px; width: 100%; }
+  @media (max-width: 900px) {
+    .app { grid-template-columns: 1fr; }
+    .side { position: static; height: auto; flex-direction: row; flex-wrap: wrap; align-items: center; border-right: 0; border-bottom: 1px solid var(--line); padding: 12px; }
+    .nav { flex-direction: row; overflow-x: auto; }
+    .nav button { white-space: nowrap; gap: 8px; width: auto; }
+    .side .foot { margin: 0 0 0 auto; flex-direction: row; align-items: center; }
+    .search { width: 180px; }
+    .main { padding: 16px 14px 48px; }
+  }
 
-  /* stat strip */
+  .ph { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .ph h2 { font: 600 20px/1.2 "Poppins", sans-serif; margin: 0; letter-spacing: -0.01em; }
+
+  /* summary strip */
   .strip { display: flex; flex-wrap: wrap; gap: 6px 22px; padding: 10px 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; margin-bottom: 14px; align-items: baseline; }
   .stat { background: none; border: 0; padding: 0; display: flex; align-items: baseline; gap: 7px; }
   .stat b { font: 600 17px/1 "Poppins", sans-serif; }
   .stat span { color: var(--muted); font-size: 12.5px; }
   .stat:hover span { color: var(--ink); }
-  .strip .upd { margin-left: auto; color: var(--faint); font-size: 12px; }
 
-  /* tabs */
-  .tabs { display: flex; gap: 2px; border-bottom: 1px solid var(--line); margin-bottom: 16px; overflow-x: auto; }
-  .tab { border: 0; background: none; padding: 9px 14px; color: var(--muted); font-weight: 500; border-bottom: 2px solid transparent; margin-bottom: -1px; white-space: nowrap; }
-  .tab:hover { color: var(--ink); }
-  .tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--ink); }
-  .tab .n { color: var(--faint); margin-left: 6px; font-size: 12px; }
-
-  /* layout */
-  .cols { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 18px; align-items: start; }
-  @media (max-width: 1000px) { .cols { grid-template-columns: 1fr; } }
+  /* panels */
+  .cols { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 16px; align-items: start; }
+  @media (max-width: 1100px) { .cols { grid-template-columns: 1fr; } }
   .stack { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
   .panel { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; min-width: 0; }
   .panel > h2, .panel > summary { font: 600 11px/1 "Poppins", sans-serif; text-transform: uppercase; letter-spacing: .09em; color: var(--muted); margin: 0; padding: 13px 14px; list-style: none; display: flex; justify-content: space-between; align-items: center; }
@@ -72,18 +81,16 @@
   details[open] > summary::after { content: "\2212"; }
   .panel .body { padding: 0 14px 14px; }
   .panel .body.flush { padding: 0; }
-
-  .note { display: flex; gap: 10px; align-items: flex-start; background: var(--info-soft); border-radius: 12px; padding: 11px 14px; margin-bottom: 14px; color: var(--ink); }
-  .note b { color: var(--info); font-family: "Poppins", sans-serif; font-weight: 600; font-size: 12.5px; white-space: nowrap; }
+  .note { display: flex; gap: 8px; align-items: center; background: var(--info-soft); border-radius: 10px; padding: 7px 12px; margin-bottom: 12px; font-size: 12.5px; }
+  .note b { color: var(--info); font-family: "Poppins", sans-serif; font-weight: 600; white-space: nowrap; }
   .note button { margin-left: auto; border: 0; background: none; color: var(--muted); font-size: 16px; line-height: 1; }
 
-  /* status */
   .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 7px; flex: none; }
   select { border: 1px solid var(--line); background: var(--soft); border-radius: 7px; padding: 3px 6px; font-size: 12.5px; }
   .pill { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 999px; padding: 1px 9px; font-size: 12px; color: var(--muted); white-space: nowrap; }
   .pill.ok { color: var(--s-applied); border-color: color-mix(in srgb, var(--s-applied) 35%, transparent); }
+  .tag { font-size: 11.5px; color: var(--accent); background: var(--accent-soft); border-radius: 6px; padding: 0 7px; }
 
-  /* controls */
   .controls { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding: 10px 12px; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--surface); border-radius: 12px 12px 0 0; z-index: 2; }
   .chip { border: 1px solid transparent; background: none; color: var(--muted); border-radius: 999px; padding: 3px 10px; font-size: 12.5px; }
   .chip:hover { background: var(--hover); }
@@ -97,33 +104,29 @@
   .row:first-child { border-top: 0; }
   .rhead { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 10px; padding-right: 12px; }
   .rmain { display: grid; grid-template-columns: 190px minmax(0, 1.5fr) 110px minmax(0, 1fr) 54px 14px; gap: 12px; align-items: center; text-align: left; background: none; border: 0; padding: 9px 12px; width: 100%; }
+  .rmain.compact { grid-template-columns: 180px minmax(0, 1fr) auto 54px 14px; }
   .rmain:hover { background: var(--hover); }
   .rmain .co { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .rmain .role, .rmain .loc, .rmain .trk { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .rmain .trk, .rmain .loc, .rmain .dt { color: var(--muted); font-size: 12.5px; }
   .chev { color: var(--faint); transition: transform .12s; font-size: 15px; }
   [aria-expanded="true"] .chev { transform: rotate(90deg); }
-  .detail { padding: 4px 14px 14px 14px; background: var(--soft); border-top: 1px dashed var(--line); display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px 18px; }
+  .detail { padding: 4px 14px 14px; background: var(--soft); border-top: 1px dashed var(--line); display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px 18px; }
   .detail .wide { grid-column: 1 / -1; }
   .detail dt { font-size: 11px; color: var(--faint); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 1px; }
   .detail dd { margin: 0; }
   .link { color: var(--accent); text-decoration: none; font-weight: 500; }
   .link:hover { text-decoration: underline; }
   @media (max-width: 860px) {
-    .rmain { grid-template-columns: minmax(0, 1fr) 14px; }
+    .rmain, .rmain.compact { grid-template-columns: minmax(0, 1fr) auto 14px; }
     .rmain .trk, .rmain .loc, .rmain .dt { display: none; }
     .rmain .role { grid-column: 1; grid-row: 2; color: var(--muted); }
-    .rmain .chev { grid-row: 1; grid-column: 2; }
   }
+  .empty { padding: 28px 14px; text-align: center; color: var(--muted); }
 
-  .empty { padding: 34px 14px; text-align: center; color: var(--muted); }
-
-  /* small lists in side rail */
   .li { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; padding: 7px 0; border-top: 1px solid var(--line); }
   .li:first-child { border-top: 0; }
-  .muted { color: var(--muted); }
-  .faint { color: var(--faint); }
-  .small { font-size: 12.5px; }
+  .muted { color: var(--muted); } .faint { color: var(--faint); } .small { font-size: 12.5px; }
   .pipe { display: flex; height: 8px; border-radius: 999px; overflow: hidden; background: var(--soft); margin-bottom: 10px; }
   .pipe span { height: 100%; display: block; }
   .legend { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 12px; }
@@ -133,42 +136,54 @@
   .check input { margin-top: 3px; accent-color: var(--accent); }
   .check.done span { color: var(--faint); text-decoration: line-through; }
 
-  /* companies master-detail */
-  .md { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 18px; align-items: start; }
+  /* companies */
+  .md { display: grid; grid-template-columns: 290px minmax(0, 1fr); gap: 16px; align-items: start; }
   @media (max-width: 900px) { .md { grid-template-columns: 1fr; } }
-  .clist { max-height: calc(100vh - 230px); overflow: auto; }
+  .clist { max-height: calc(100vh - 150px); overflow: auto; }
   .citem { display: flex; justify-content: space-between; align-items: center; gap: 8px; width: 100%; text-align: left; background: none; border: 0; border-top: 1px solid var(--line); padding: 9px 12px; }
   .citem:first-child { border-top: 0; }
   .citem:hover { background: var(--hover); }
   .citem[aria-current="true"] { background: var(--accent-soft); }
   .cd h3 { font: 600 16px/1.2 "Poppins", sans-serif; margin: 0 0 2px; }
   .cd .sec { padding: 12px 14px; border-top: 1px solid var(--line); }
-  .cd .sec h4 { margin: 0 0 8px; font: 600 11px/1 "Poppins", sans-serif; text-transform: uppercase; letter-spacing: .09em; color: var(--muted); }
+  .cd .sec:first-child { border-top: 0; }
+  .h4 { margin: 0 0 8px; font: 600 11px/1 "Poppins", sans-serif; text-transform: uppercase; letter-spacing: .09em; color: var(--muted); }
 
   /* outreach */
-  .orow { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1.2fr) 80px 120px; gap: 12px; align-items: center; padding: 9px 12px; border-top: 1px solid var(--line); }
+  .orow { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1.2fr) 70px 110px; gap: 12px; align-items: center; padding: 9px 12px; border-top: 1px solid var(--line); }
   .orow.head { border-top: 0; font: 600 11px/1 "Poppins", sans-serif; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); padding-top: 12px; }
   @media (max-width: 860px) { .orow { grid-template-columns: 1fr 1fr; } .orow.head { display: none; } }
   .tpl { background: var(--soft); border: 1px solid var(--line); border-radius: 9px; padding: 10px 12px; white-space: pre-wrap; margin-bottom: 8px; }
   .acc { border-top: 1px solid var(--line); }
   .acc:first-child { border-top: 0; }
   .acc > summary { text-transform: none; letter-spacing: 0; font: 500 13px/1.3 "Inter", sans-serif; color: var(--ink); }
-  footer { margin-top: 22px; color: var(--faint); font-size: 12px; }
+
+  /* resumes */
+  .rgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; margin-bottom: 14px; align-items: start; }
+  .rh { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; padding: 14px; border-bottom: 1px solid var(--line); }
+  .rh h3 { font: 600 16px/1.2 "Poppins", sans-serif; margin: 0 0 2px; }
+  .def dt { font-size: 11px; color: var(--faint); text-transform: uppercase; letter-spacing: .06em; margin: 10px 0 2px; }
+  .def dt:first-child { margin-top: 0; }
+  .def dd { margin: 0; }
+  .matrix { width: 100%; border-collapse: collapse; }
+  .matrix th { text-align: left; font: 600 11px/1 "Poppins", sans-serif; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); padding: 0 12px 10px; }
+  .matrix td { padding: 8px 12px; border-top: 1px solid var(--line); }
+  .matrix td.c { text-align: center; }
+  .matrix th.c { text-align: center; }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header class="top">
+<div class="app">
+  <aside class="side">
     <div class="brand"><h1 id="name"></h1><div class="sub" id="tagline"></div></div>
-    <div class="grow"></div>
-    <input class="search" id="gsearch" type="search" placeholder="Search roles and companies" aria-label="Search roles and companies">
-    <button class="btn" id="theme" type="button">Theme</button>
-  </header>
-
-  <section class="strip" id="strip" aria-label="Summary"></section>
-  <nav class="tabs" role="tablist" id="tabs"></nav>
-  <main id="view"></main>
-  <footer id="foot"></footer>
+    <input class="search" id="gsearch" type="search" placeholder="Search  (press /)" aria-label="Search roles and companies">
+    <nav class="nav" id="nav" aria-label="Sections"></nav>
+    <div class="foot"><span id="upd"></span><button class="btn" id="theme" type="button">Toggle theme</button></div>
+  </aside>
+  <main class="main">
+    <div class="ph"><h2 id="ptitle"></h2><span class="sub" id="psub"></span></div>
+    <div id="view"></div>
+  </main>
 </div>
 
 <script>
@@ -192,9 +207,9 @@ window.PROFILE = {
 };
 
 window.RESUMES = [
-  { name: "ML", use: "AI, LLM, research and data science intern roles", lead: "NLP, RAG and LLM work first" },
-  { name: "SWE", use: "Backend, full-stack and software intern roles", lead: "Systems and data platform work first" },
-  { name: "Data", use: "Data analyst and BI roles", lead: "SQL, ETL and dashboards first" }
+  { name: "ML", use: "AI, LLM, research and data science roles", headline: "AI/ML Engineer | Python, NLP, LLMs, RAG", summary: "NLP and LLM applications: Telugu text corpus and tokenizer work at VISWAM.AI with IIIT-H, plus a RAG based compliance copilot. Also ETL and dashboards at DRDO.", skills: "AI/ML first, then languages, data analysis, data engineering, BI", projects: "MAS-Compliance, Twitter Sentiment, Concrete Strength, NextGen-AI", file: "resumes/Chandana_Resume_ML.pdf" },
+  { name: "SWE", use: "Backend, full-stack and software roles", headline: "Software Engineer | Python, Java, SQL, Full-Stack, Data Systems", summary: "End-to-end systems: a containerized data platform at DRDO and a full-stack Next.js and TypeScript copilot on PostgreSQL and Redis.", skills: "Languages first, then data engineering, AI/ML, data analysis, BI", projects: "MAS-Compliance, NextGen-AI, Twitter Sentiment, Concrete Strength", file: "resumes/Chandana_Resume_SWE.pdf" },
+  { name: "Data", use: "Data analyst and BI roles", headline: "Data Analyst | SQL, Python, ETL, BI Dashboards", summary: "ETL pipelines, a SQL warehouse and BI dashboards at DRDO, with Python, SQL, EDA and statistical modelling turned into KPIs and insights.", skills: "Languages first, then data analysis, BI, data engineering, AI/ML", projects: "MAS-Compliance, Concrete Strength, Twitter Sentiment, NextGen-AI", file: "resumes/Chandana_Resume_Data.pdf" }
 ];
 
 window.ALERTS = [
@@ -204,15 +219,13 @@ window.ALERTS = [
 ];
 
 window.NOTES = [
-  { title: "Market note", body: "Beyond these applications, the search is thin right now. Most big-company 2027 intern cycles open between November and January, so alerts are on and the big portals get rechecked weekly." }
+  { title: "Note", body: "Big-company 2027 intern cycles open Nov to Jan. Alerts are on." }
 ];
 
 window.NEXT = [
-  "Recheck Amazon, Microsoft, Intuit, Salesforce and Adobe careers pages weekly from November",
-  "Send the longer referral message to anyone who accepts, with the exact job ID once a role is live",
-  "Find the correct Sprinto company page and reach engineers there",
-  "Reach more GITAM 2023 alumni at Amazon, Microsoft, Adobe and Intuit in small batches",
-  "Referral asks at other companies only once an eligible intern role is live with a job ID",
+  "Recheck big-company portals weekly",
+  "Send the referral message to accepted connections",
+  "Find the real Sprinto company page",
   "Full-time roles only above 7 to 8 LPA"
 ];
 
@@ -264,28 +277,30 @@ window.TEMPLATES = [
 const STATUSES = [["lead", "Lead"], ["verified", "Verified"], ["ready", "Ready"], ["applied", "Applied"], ["interview", "Interview"], ["closed", "Skipped"]];
 const LABEL = Object.fromEntries(STATUSES);
 const OSTAT = ["sent", "accepted", "replied", "referred", "no reply"];
-const KEY = "chandana-dashboard-v3";
+const KEY = "chandana-dashboard-v4";
 const store = (() => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } })();
 store.j = store.j || {}; store.o = store.o || {}; store.n = store.n || {};
 const persist = () => { try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {} };
 const statusOf = j => store.j[j.id] || j.status;
 const ostatus = (o, i) => store.o[i] || o.status;
 const state = { tab: "overview", status: "all", track: "all", sort: "status", q: "", open: new Set(), company: null, noteHidden: false };
+const PAGES = { overview: ["Overview", "Where things stand"], jobs: ["Jobs", "Every tracked role"], companies: ["Companies", "Roles and people by company"], outreach: ["Outreach", "Messages and templates"], resumes: ["Resumes", "Versions and where each was used"] };
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const col = s => `var(--s-${s})`;
 const fmtDate = d => d ? new Date(d + "T00:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "short" }) : "";
-const ORDER = Object.fromEntries(STATUSES.map(([k], i) => [k, ["applied", "interview", "ready", "verified", "lead", "closed"].indexOf(k)]));
+const ORDER = Object.fromEntries(["applied", "interview", "ready", "verified", "lead", "closed"].map((k, i) => [k, i]));
 const jobs = () => window.JOBS;
 const isApplied = j => ["applied", "interview"].includes(statusOf(j));
-const matches = (j, q) => !q || `${j.company} ${j.role} ${j.location} ${j.track}`.toLowerCase().includes(q.toLowerCase());
+const matches = (j, q) => !q || `${j.company} ${j.role} ${j.location} ${j.track} ${j.resume || ""}`.toLowerCase().includes(q.toLowerCase());
 const companies = () => {
   const m = new Map();
   jobs().forEach(j => { if (!m.has(j.company)) m.set(j.company, []); m.get(j.company).push(j); });
   return [...m.entries()].map(([name, list]) => ({ name, list, applied: list.filter(isApplied).length }))
     .sort((a, b) => b.applied - a.applied || b.list.length - a.list.length || a.name.localeCompare(b.name));
 };
+const keepScroll = fn => { const y = window.scrollY; fn(); window.scrollTo(0, y); };
 
 /* ============ COMPONENTS ============ */
 const Dot = s => `<span class="dot" style="background:${col(s)}"></span>`;
@@ -296,62 +311,50 @@ const Detail = j => {
   return `<dl class="detail">
     <div class="wide"><dt>Notes</dt><dd>${esc(j.note || "None")}</dd></div>
     <div><dt>Type</dt><dd>${esc(j.type)}</dd></div>
+    <div><dt>Track</dt><dd>${esc(j.track)}</dd></div>
     <div><dt>Location</dt><dd>${esc(j.location)}</dd></div>
     <div><dt>Applied</dt><dd>${j.date ? fmtDate(j.date) + (j.via ? " via " + esc(j.via) : "") : "Not yet"}</dd></div>
     <div><dt>Resume</dt><dd>${esc(j.resume || "Not chosen")}</dd></div>
-    <div><dt>People messaged here</dt><dd>${related}</dd></div>
+    <div><dt>People messaged</dt><dd>${related}</dd></div>
     <div><dt>Posting</dt><dd><a class="link" href="${j.url}" target="_blank" rel="noopener">Open</a></dd></div>
   </dl>`;
 };
 
-const JobRow = (j, withSelect = true) => {
+const JobRow = (j, opts = {}) => {
   const open = state.open.has(j.id);
-  return `<div class="row">
-    <div class="rhead">
-      <button class="rmain" type="button" data-toggle="${j.id}" aria-expanded="${open}">
-        <span class="co">${esc(j.company)}</span>
-        <span class="role">${esc(j.role)}</span>
-        <span class="trk">${esc(j.track)}</span>
-        <span class="loc">${esc(j.location)}</span>
-        <span class="dt">${fmtDate(j.date)}</span>
-        <span class="chev">&rsaquo;</span>
-      </button>
-      ${withSelect ? StatusSelect(j) : ""}
+  const inner = opts.compact
+    ? `<span class="co">${esc(j.company)}</span><span class="role">${esc(j.role)}</span><span>${j.resume ? `<span class="tag">${esc(j.resume)}</span>` : ""}</span><span class="dt">${fmtDate(j.date)}</span><span class="chev">&rsaquo;</span>`
+    : `<span class="co">${esc(j.company)}</span><span class="role">${esc(j.role)}</span><span class="trk">${esc(j.track)}</span><span class="loc">${esc(j.location)}</span><span class="dt">${fmtDate(j.date)}</span><span class="chev">&rsaquo;</span>`;
+  return `<div class="row"><div class="rhead">
+      <button class="rmain ${opts.compact ? "compact" : ""}" type="button" data-toggle="${j.id}" aria-expanded="${open}">${inner}</button>
+      ${opts.select === false ? "" : StatusSelect(j)}
     </div>${open ? Detail(j) : ""}</div>`;
 };
 
 /* ============ VIEWS ============ */
-function Strip() {
-  const a = jobs().filter(isApplied).length;
-  const cos = new Set(jobs().filter(isApplied).map(j => j.company)).size;
-  const leads = jobs().filter(j => ["lead", "verified", "ready"].includes(statusOf(j))).length;
-  const sent = OUTREACH.length;
-  const acc = OUTREACH.filter((o, i) => ["accepted", "replied", "referred"].includes(ostatus(o, i))).length;
-  const S = (n, l, act) => `<button class="stat" type="button" data-go="${act}"><b>${n}</b><span>${l}</span></button>`;
-  $("#strip").innerHTML = S(a, "applied", "applied") + S(cos, "companies", "companies") + S(sent, "messages sent", "outreach") + S(acc, "accepted", "outreach") + S(leads, "leads to watch", "lead") + `<span class="upd">Updated ${esc(META.updated)}</span>`;
-}
-
 function Overview() {
   const total = jobs().length || 1;
   const counts = STATUSES.map(([k, l]) => [k, l, jobs().filter(j => statusOf(j) === k).length]);
-  const applied = jobs().filter(isApplied).sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+  const a = jobs().filter(isApplied).sort((x, y) => (y.date || "").localeCompare(x.date || ""));
   const watch = jobs().filter(j => ["lead", "verified", "ready"].includes(statusOf(j)));
+  const cos = new Set(a.map(j => j.company)).size;
+  const acc = OUTREACH.filter((o, i) => ["accepted", "replied", "referred"].includes(ostatus(o, i))).length;
+  const S = (n, l, act) => `<button class="stat" type="button" data-go="${act}"><b>${n}</b><span>${l}</span></button>`;
   return `
-  ${state.noteHidden ? "" : NOTES.map(n => `<div class="note"><b>${esc(n.title)}</b><span>${esc(n.body)}</span><button type="button" data-hidenote aria-label="Dismiss note">&times;</button></div>`).join("")}
+  ${state.noteHidden ? "" : NOTES.map(n => `<div class="note"><b>${esc(n.title)}</b><span>${esc(n.body)}</span><button type="button" data-hidenote aria-label="Dismiss">&times;</button></div>`).join("")}
+  <section class="strip">${S(a.length, "applied", "applied")}${S(cos, "companies", "companies")}${S(OUTREACH.length, "messages", "outreach")}${S(acc, "accepted", "outreach")}${S(watch.length, "leads", "lead")}</section>
   <div class="cols">
     <div class="stack">
-      <section class="panel"><h2>Applications <span class="faint">${applied.length}</span></h2><div class="body flush">${applied.length ? applied.map(j => JobRow(j, false)).join("") : `<div class="empty">Nothing yet.</div>`}</div></section>
-      <details class="panel" open><summary>Leads to watch <span class="faint">${watch.length}</span></summary><div class="body flush">${watch.map(j => JobRow(j)).join("") || `<div class="empty">No open leads.</div>`}</div></details>
+      <section class="panel"><h2>Applied</h2><div class="body flush">${a.length ? a.map(j => JobRow(j, { compact: true, select: false })).join("") : `<div class="empty">Nothing yet.</div>`}</div></section>
+      <details class="panel"><summary>Leads to watch <span class="faint">${watch.length}</span></summary><div class="body flush">${watch.map(j => JobRow(j, { compact: true })).join("") || `<div class="empty">No open leads.</div>`}</div></details>
     </div>
     <div class="stack">
       <section class="panel"><h2>Pipeline</h2><div class="body">
         <div class="pipe">${counts.map(([k, , n]) => n ? `<span style="width:${(n / total) * 100}%;background:${col(k)}"></span>` : "").join("")}</div>
         <div class="legend">${counts.map(([k, l, n]) => `<button type="button" data-go="${k}"><span>${Dot(k)}${l}</span><b>${n}</b></button>`).join("")}</div>
       </div></section>
-      <section class="panel"><h2>Next actions</h2><div class="body">${NEXT.map((t, i) => `<label class="check ${store.n[i] ? "done" : ""}"><input type="checkbox" data-next="${i}" ${store.n[i] ? "checked" : ""}><span>${esc(t)}</span></label>`).join("")}</div></section>
-      <details class="panel"><summary>LinkedIn alerts</summary><div class="body">${ALERTS.map(a => `<div class="li"><span>${esc(a.q)}</span><span class="pill ${a.on ? "ok" : ""}">${a.on ? "On" : "Check"}</span></div>`).join("")}</div></details>
-      <details class="panel"><summary>Resume versions</summary><div class="body">${RESUMES.map(r => `<div class="li"><div><b>${esc(r.name)}</b><div class="small muted">${esc(r.use)}</div></div></div>`).join("")}</div></details>
-      <details class="panel"><summary>Profile</summary><div class="body">${PROFILE.tracks.map(t => `<div class="li"><div><b>${esc(t.name)}</b><div class="small muted">${esc(t.detail)}</div></div></div>`).join("")}<div style="margin-top:8px">${PROFILE.links.map(l => `<a class="link" style="margin-right:14px" href="${l.url}" target="_blank" rel="noopener">${esc(l.label)}</a>`).join("")}</div></div></details>
+      <section class="panel"><h2>Next</h2><div class="body">${NEXT.map((t, i) => `<label class="check ${store.n[i] ? "done" : ""}"><input type="checkbox" data-next="${i}" ${store.n[i] ? "checked" : ""}><span>${esc(t)}</span></label>`).join("")}</div></section>
+      <details class="panel"><summary>Alerts</summary><div class="body">${ALERTS.map(x => `<div class="li"><span>${esc(x.q)}</span><span class="pill ${x.on ? "ok" : ""}">${x.on ? "On" : "Check"}</span></div>`).join("")}</div></details>
     </div>
   </div>`;
 }
@@ -366,13 +369,12 @@ function Jobs() {
       <span class="sep"></span>${tracks.map(t => chip("track", t, t === "all" ? "Any track" : t)).join("")}
       <span class="push">Sort <select id="sort" aria-label="Sort"><option value="status">Status</option><option value="recent">Recent</option><option value="company">Company</option></select>
       <button class="btn" type="button" data-expand>Expand all</button></span>
-    </div>
-    <div id="jobsList"></div></section>`;
+    </div><div id="jobsList"></div></section>`;
 }
+const filteredJobs = () => jobs().filter(j => (state.status === "all" || statusOf(j) === state.status) && (state.track === "all" || j.track === state.track) && matches(j, state.q));
 function JobsList() {
-  let list = jobs().filter(j => (state.status === "all" || statusOf(j) === state.status) && (state.track === "all" || j.track === state.track) && matches(j, state.q));
   const by = { status: (a, b) => ORDER[statusOf(a)] - ORDER[statusOf(b)] || a.company.localeCompare(b.company), recent: (a, b) => (b.date || "").localeCompare(a.date || "") || a.company.localeCompare(b.company), company: (a, b) => a.company.localeCompare(b.company) };
-  list.sort(by[state.sort]);
+  const list = filteredJobs().sort(by[state.sort]);
   $("#jobsList").innerHTML = list.length ? list.map(j => JobRow(j)).join("") : `<div class="empty">Nothing matches these filters.</div>`;
   const s = $("#sort"); if (s) s.value = state.sort;
 }
@@ -381,12 +383,12 @@ function Companies() {
   const all = companies().filter(c => !state.q || c.name.toLowerCase().includes(state.q.toLowerCase()) || c.list.some(j => matches(j, state.q)));
   if (!all.find(c => c.name === state.company)) state.company = all[0] ? all[0].name : null;
   const sel = all.find(c => c.name === state.company);
-  const msgs = sel ? OUTREACH.map((o, i) => [o, i]).filter(([o]) => o.company === sel.name || (sel.name.startsWith(o.company) || o.company.startsWith(sel.name))) : [];
+  const msgs = sel ? OUTREACH.map((o, i) => [o, i]).filter(([o]) => o.company === sel.name || sel.name.startsWith(o.company) || o.company.startsWith(sel.name)) : [];
   return `<div class="md">
     <section class="panel"><h2>${all.length} companies</h2><div class="body flush clist">${all.map(c => `<button class="citem" type="button" data-company="${esc(c.name)}" aria-current="${c.name === state.company}"><span><b>${esc(c.name)}</b><div class="small muted">${c.list.length} role${c.list.length > 1 ? "s" : ""}</div></span><span class="pill ${c.applied ? "ok" : ""}">${c.applied} applied</span></button>`).join("") || `<div class="empty">No match.</div>`}</div></section>
     <section class="panel cd">${sel ? `<div class="sec"><h3>${esc(sel.name)}</h3><div class="muted small">${sel.applied} applied of ${sel.list.length} tracked, ${msgs.length} message${msgs.length === 1 ? "" : "s"} sent</div></div>
-      <div class="sec" style="padding:0"><div style="padding:12px 14px 4px"><h4 style="margin:0;font:600 11px/1 Poppins,sans-serif;text-transform:uppercase;letter-spacing:.09em;color:var(--muted)">Roles</h4></div>${sel.list.map(j => JobRow(j)).join("")}</div>
-      <div class="sec"><h4>Outreach</h4>${msgs.length ? msgs.map(([o, i]) => `<div class="li"><div><b>${esc(o.name)}</b><div class="small muted">${esc(o.role)}, ${fmtDate(o.date)}</div></div><span class="pill">${esc(ostatus(o, i))}</span></div>`).join("") : `<div class="muted small">No messages sent here yet.</div>`}</div>` : `<div class="empty">Select a company.</div>`}</section>
+      <div class="sec" style="padding:0"><div style="padding:12px 14px 4px"><div class="h4" style="margin:0">Roles</div></div>${sel.list.map(j => JobRow(j)).join("")}</div>
+      <div class="sec"><div class="h4">Outreach</div>${msgs.length ? msgs.map(([o, i]) => `<div class="li"><div><b>${esc(o.name)}</b><div class="small muted">${esc(o.role)}, ${fmtDate(o.date)}</div></div><span class="pill">${esc(ostatus(o, i))}</span></div>`).join("") : `<div class="muted small">No messages sent here yet.</div>`}</div>` : `<div class="empty">Select a company.</div>`}</section>
   </div>`;
 }
 
@@ -394,36 +396,60 @@ function Outreach() {
   const rows = OUTREACH.map((o, i) => [o, i]).filter(([o]) => !state.q || `${o.company} ${o.name} ${o.role}`.toLowerCase().includes(state.q.toLowerCase()));
   const targets = companies().filter(c => c.applied);
   return `<div class="cols">
+    <section class="panel"><h2>Messages <span class="faint">${rows.length}</span></h2><div class="body flush">
+      <div class="orow head"><span>Person</span><span>Company</span><span>For</span><span>Date</span><span>Status</span></div>
+      ${rows.length ? rows.map(([o, i]) => `<div class="orow"><span><b>${esc(o.name)}</b><div class="small muted">${esc(o.channel)}</div></span><span>${esc(o.company)}</span><span class="muted">${esc(o.role)}</span><span class="muted">${fmtDate(o.date)}</span><select data-ostat="${i}" aria-label="Status">${OSTAT.map(s => `<option${s === ostatus(o, i) ? " selected" : ""}>${s}</option>`).join("")}</select></div>`).join("") : `<div class="empty">No messages sent yet.</div>`}
+    </div></section>
     <div class="stack">
-      <section class="panel"><h2>Messages <span class="faint">${rows.length}</span></h2><div class="body flush">
-        <div class="orow head"><span>Person</span><span>Company</span><span>For</span><span>Date</span><span>Status</span></div>
-        ${rows.length ? rows.map(([o, i]) => `<div class="orow"><span><b>${esc(o.name)}</b><div class="small muted">${esc(o.channel)}</div></span><span>${esc(o.company)}</span><span class="muted">${esc(o.role)}</span><span class="muted">${fmtDate(o.date)}</span><select data-ostat="${i}" aria-label="Status">${OSTAT.map(s => `<option${s === ostatus(o, i) ? " selected" : ""}>${s}</option>`).join("")}</select></div>`).join("") : `<div class="empty">No messages sent yet.</div>`}
-      </div></section>
-    </div>
-    <div class="stack">
-      <details class="panel" open><summary>Message templates</summary><div class="body flush">${TEMPLATES.map((t, i) => `<details class="acc"><summary>${esc(t.name)}</summary><div class="body"><div class="tpl">${esc(t.body)}</div><button class="btn" type="button" data-copy="${i}">Copy</button></div></details>`).join("")}</div></details>
+      <details class="panel" open><summary>Templates</summary><div class="body flush">${TEMPLATES.map((t, i) => `<details class="acc"><summary>${esc(t.name)}</summary><div class="body"><div class="tpl">${esc(t.body)}</div><button class="btn" type="button" data-copy="${i}">Copy</button></div></details>`).join("")}</div></details>
       <details class="panel"><summary>Who to reach</summary><div class="body">${targets.map(c => `<div class="li"><div><b>${esc(c.name)}</b><div class="small muted">Engineers, hiring managers, GITAM alumni</div></div><span class="pill">${c.applied}</span></div>`).join("")}</div></details>
     </div>
   </div>`;
 }
 
-const VIEWS = { overview: Overview, jobs: Jobs, companies: Companies, outreach: Outreach };
+function Resumes() {
+  const usedBy = r => jobs().filter(j => j.resume === r.name && isApplied(j)).sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+  const names = RESUMES.map(r => r.name);
+  const used = jobs().filter(j => j.resume && isApplied(j));
+  const cos = [...new Set(used.map(j => j.company))];
+  const cards = RESUMES.map(r => {
+    const u = usedBy(r);
+    return `<section class="panel">
+      <div class="rh"><div><h3>${esc(r.name)}</h3><div class="muted small">${esc(r.use)}</div></div><span class="pill ${u.length ? "ok" : ""}">${u.length} used</span></div>
+      <div class="body flush">${u.length ? u.map(j => JobRow(j, { compact: true, select: false })).join("") : `<div class="empty small">Not used yet</div>`}</div>
+      <details class="acc"><summary>What is different</summary><div class="body"><dl class="def">
+        <dt>Headline</dt><dd>${esc(r.headline)}</dd>
+        <dt>Summary</dt><dd>${esc(r.summary)}</dd>
+        <dt>Skills order</dt><dd>${esc(r.skills)}</dd>
+        <dt>Project order</dt><dd>${esc(r.projects)}</dd>
+        <dt>File</dt><dd class="muted">${esc(r.file)} (kept locally, not published)</dd>
+      </dl></div></details></section>`;
+  }).join("");
+  const matrix = `<section class="panel"><h2>Company by resume</h2><div class="body flush" style="overflow-x:auto"><table class="matrix"><thead><tr><th>Company</th>${names.map(n => `<th class="c">${esc(n)}</th>`).join("")}<th>Roles</th></tr></thead><tbody>
+    ${cos.map(c => { const rows = used.filter(j => j.company === c); return `<tr><td><b>${esc(c)}</b></td>${names.map(n => { const k = rows.filter(j => j.resume === n).length; return `<td class="c">${k ? `<span class="tag">${k}</span>` : `<span class="faint">0</span>`}</td>`; }).join("")}<td class="muted small">${rows.map(j => esc(j.role)).join(", ")}</td></tr>`; }).join("") || `<tr><td class="muted" colspan="${names.length + 2}">No applications yet.</td></tr>`}
+    </tbody></table></div></section>`;
+  return `<div class="rgrid">${cards}</div>${matrix}`;
+}
+
+const VIEWS = { overview: Overview, jobs: Jobs, companies: Companies, outreach: Outreach, resumes: Resumes };
 
 /* ============ SHELL ============ */
-function renderTabs() {
-  const n = { jobs: jobs().length, companies: companies().length, outreach: OUTREACH.length };
-  $("#tabs").innerHTML = [["overview", "Overview"], ["jobs", "Jobs"], ["companies", "Companies"], ["outreach", "Outreach"]]
-    .map(([k, l]) => `<button class="tab" role="tab" type="button" data-tab="${k}" aria-selected="${state.tab === k}">${l}${n[k] != null ? `<span class="n">${n[k]}</span>` : ""}</button>`).join("");
+function renderNav() {
+  const n = { jobs: jobs().length, companies: companies().length, outreach: OUTREACH.length, resumes: RESUMES.length };
+  $("#nav").innerHTML = Object.keys(PAGES).map(k => `<button type="button" data-tab="${k}" ${state.tab === k ? 'aria-current="page"' : ""}><span>${PAGES[k][0]}</span>${n[k] != null ? `<span class="n">${n[k]}</span>` : ""}</button>`).join("");
 }
 function render() {
-  Strip(); renderTabs();
+  renderNav();
+  $("#ptitle").textContent = PAGES[state.tab][0];
+  $("#psub").textContent = PAGES[state.tab][1];
   $("#view").innerHTML = VIEWS[state.tab]();
   if (state.tab === "jobs") JobsList();
 }
 function setTab(t) { state.tab = VIEWS[t] ? t : "overview"; history.replaceState(null, "", "#" + state.tab); render(); window.scrollTo(0, 0); }
 function go(a) {
   if (a === "companies" || a === "outreach") return setTab(a);
-  if (a === "applied" || LABEL[a]) { state.status = a; state.track = "all"; return setTab("jobs"); }
+  if (LABEL[a]) { state.status = a; state.track = "all"; return setTab("jobs"); }
+  if (a === "applied") { state.status = "applied"; return setTab("jobs"); }
 }
 
 document.addEventListener("click", e => {
@@ -432,26 +458,26 @@ document.addEventListener("click", e => {
   if (e.target.closest("[data-hidenote]")) { state.noteHidden = true; return render(); }
   const c = e.target.closest(".chip"); if (c) { state[c.dataset.g] = c.dataset.v; return render(); }
   const tg = e.target.closest("[data-toggle]");
-  if (tg) { const id = +tg.dataset.toggle; state.open.has(id) ? state.open.delete(id) : state.open.add(id); const y = window.scrollY; render(); window.scrollTo(0, y); return; }
-  if (e.target.closest("[data-expand]")) { const list = jobs().filter(j => (state.status === "all" || statusOf(j) === state.status) && (state.track === "all" || j.track === state.track) && matches(j, state.q)); const all = list.every(j => state.open.has(j.id)); list.forEach(j => all ? state.open.delete(j.id) : state.open.add(j.id)); return render(); }
+  if (tg) { const id = +tg.dataset.toggle; state.open.has(id) ? state.open.delete(id) : state.open.add(id); return keepScroll(render); }
+  if (e.target.closest("[data-expand]")) { const list = filteredJobs(); const all = list.every(j => state.open.has(j.id)); list.forEach(j => all ? state.open.delete(j.id) : state.open.add(j.id)); return render(); }
   const co = e.target.closest("[data-company]"); if (co) { state.company = co.dataset.company; return render(); }
   const cp = e.target.closest("[data-copy]");
   if (cp) { try { navigator.clipboard.writeText(TEMPLATES[+cp.dataset.copy].body); cp.textContent = "Copied"; setTimeout(() => cp.textContent = "Copy", 1200); } catch (x) {} }
 });
 document.addEventListener("change", e => {
-  const s = e.target.closest("select[data-job]"); if (s) { store.j[s.dataset.job] = s.value; persist(); const y = window.scrollY; render(); window.scrollTo(0, y); return; }
-  const o = e.target.closest("select[data-ostat]"); if (o) { store.o[o.dataset.ostat] = o.value; persist(); render(); return; }
-  const n = e.target.closest("input[data-next]"); if (n) { store.n[n.dataset.next] = n.checked; persist(); render(); return; }
+  const s = e.target.closest("select[data-job]"); if (s) { store.j[s.dataset.job] = s.value; persist(); return keepScroll(render); }
+  const o = e.target.closest("select[data-ostat]"); if (o) { store.o[o.dataset.ostat] = o.value; persist(); return render(); }
+  const n = e.target.closest("input[data-next]"); if (n) { store.n[n.dataset.next] = n.checked; persist(); return render(); }
   if (e.target.id === "sort") { state.sort = e.target.value; JobsList(); }
 });
 $("#gsearch").addEventListener("input", e => {
   state.q = e.target.value;
-  if (state.q && state.tab === "overview") return setTab("jobs");
+  if (state.q && (state.tab === "overview" || state.tab === "resumes")) return setTab("jobs"), $("#gsearch").focus();
   if (state.tab === "jobs") JobsList(); else render();
-  $("#gsearch").focus();
 });
 document.addEventListener("keydown", e => {
-  if (e.key === "/" && document.activeElement.tagName !== "INPUT" && document.activeElement.tagName !== "SELECT") { e.preventDefault(); $("#gsearch").focus(); }
+  const tag = document.activeElement.tagName;
+  if (e.key === "/" && tag !== "INPUT" && tag !== "SELECT") { e.preventDefault(); $("#gsearch").focus(); }
   if (e.key === "Escape") { state.q = ""; $("#gsearch").value = ""; $("#gsearch").blur(); render(); }
 });
 $("#theme").onclick = () => {
@@ -461,8 +487,8 @@ $("#theme").onclick = () => {
 };
 
 $("#name").textContent = PROFILE.name;
-$("#tagline").textContent = `${PROFILE.title}, graduating ${PROFILE.grad}, CGPA ${PROFILE.cgpa}`;
-$("#foot").textContent = "Press / to search, Esc to clear. Status edits and checkboxes are saved in this browser only.";
+$("#tagline").textContent = `${PROFILE.title}, ${PROFILE.grad}`;
+$("#upd").textContent = `Updated ${META.updated}`;
 setTab((location.hash || "").replace("#", "") || "overview");
 </script>
 </body>
