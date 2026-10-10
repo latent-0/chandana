@@ -3,213 +3,370 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
 <title>Job Search Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #f6f5f2; --surface: #ffffff; --ink: #1b1b1a; --muted: #6b6a66; --line: #e6e4de;
-    --accent: #2f4f46; --accent-soft: #e4ece9; --warn: #8a5a14; --warn-soft: #f6ecd9;
-    --s-lead: #6b6a66; --s-verified: #2f5d8a; --s-ready: #7a5b9a; --s-applied: #2f6b3f; --s-interview: #a14b2a; --s-closed: #a8a69f;
+    --bg: #f5f4f0; --surface: #ffffff; --surface-2: #faf9f6; --ink: #1a1a18; --muted: #6a6963; --line: #e7e5de;
+    --accent: #2f4f46; --accent-soft: #e3ece8; --info: #29506f; --info-soft: #e4edf5;
+    --s-lead: #86847c; --s-verified: #2f5d8a; --s-ready: #7a5b9a; --s-applied: #2f6b3f; --s-interview: #a14b2a; --s-closed: #b3b1a9;
+    --radius: 16px; --shadow: 0 1px 2px rgba(20,20,10,.04);
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --bg: #151514; --surface: #1d1d1b; --ink: #ecebe6; --muted: #9a988f; --line: #2c2c29;
-      --accent: #8fb8a8; --accent-soft: #23302b; --warn: #e0b36a; --warn-soft: #302a1c;
-      --s-lead: #9a988f; --s-verified: #7fb0dc; --s-ready: #b79bd6; --s-applied: #7fc08f; --s-interview: #e39a78; --s-closed: #66645e;
+      --bg: #131312; --surface: #1c1c1a; --surface-2: #222220; --ink: #ecebe6; --muted: #9c9a91; --line: #2d2d2a;
+      --accent: #8fb8a8; --accent-soft: #22302b; --info: #8fb6d9; --info-soft: #1f2c38;
+      --s-lead: #9c9a91; --s-verified: #7fb0dc; --s-ready: #b79bd6; --s-applied: #7fc08f; --s-interview: #e39a78; --s-closed: #67655f;
     }
   }
   :root[data-theme="dark"] {
-    --bg: #151514; --surface: #1d1d1b; --ink: #ecebe6; --muted: #9a988f; --line: #2c2c29;
-    --accent: #8fb8a8; --accent-soft: #23302b; --warn: #e0b36a; --warn-soft: #302a1c;
-    --s-lead: #9a988f; --s-verified: #7fb0dc; --s-ready: #b79bd6; --s-applied: #7fc08f; --s-interview: #e39a78; --s-closed: #66645e;
+    --bg: #131312; --surface: #1c1c1a; --surface-2: #222220; --ink: #ecebe6; --muted: #9c9a91; --line: #2d2d2a;
+    --accent: #8fb8a8; --accent-soft: #22302b; --info: #8fb6d9; --info-soft: #1f2c38;
+    --s-lead: #9c9a91; --s-verified: #7fb0dc; --s-ready: #b79bd6; --s-applied: #7fc08f; --s-interview: #e39a78; --s-closed: #67655f;
   }
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--bg); color: var(--ink); font: 400 14.5px/1.55 "Inter", system-ui, sans-serif; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 400 14.5px/1.55 "Inter", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  button, input, select, textarea { font-family: inherit; font-size: inherit; color: inherit; }
   a { color: inherit; }
-  .wrap { max-width: 1160px; margin: 0 auto; padding: 40px 24px 64px; }
-  header { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin-bottom: 28px; }
-  h1 { font: 600 26px/1.2 "Poppins", sans-serif; margin: 0 0 6px; letter-spacing: -0.01em; }
-  .sub { color: var(--muted); font-size: 14px; }
-  .toggle { border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 6px 14px; font-family: inherit; font-size: 13px; cursor: pointer; }
-  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 28px; }
-  .stat { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
-  .stat b { display: block; font: 600 24px/1.1 "Poppins", sans-serif; }
-  .stat span { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
-  .grid { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 24px; align-items: start; }
-  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
-  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; }
-  .filters { display: flex; flex-wrap: wrap; gap: 8px; padding: 14px 16px; border-bottom: 1px solid var(--line); align-items: center; }
-  .chip { border: 1px solid var(--line); background: transparent; color: var(--muted); border-radius: 999px; padding: 4px 12px; font-family: inherit; font-size: 13px; cursor: pointer; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 32px 20px 72px; }
+
+  /* header */
+  .top { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 22px; }
+  h1 { font: 600 26px/1.15 "Poppins", sans-serif; margin: 0 0 4px; letter-spacing: -0.01em; }
+  .sub { color: var(--muted); font-size: 13.5px; }
+  .ghost { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 6px 14px; cursor: pointer; font-size: 13px; }
+  .ghost:hover { border-color: var(--muted); }
+
+  /* tabs */
+  .tabs { display: flex; gap: 4px; padding: 4px; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; width: max-content; max-width: 100%; overflow-x: auto; margin-bottom: 20px; }
+  .tab { border: 0; background: transparent; padding: 7px 16px; border-radius: 999px; cursor: pointer; color: var(--muted); font-weight: 500; font-size: 13.5px; white-space: nowrap; }
+  .tab[aria-selected="true"] { background: var(--ink); color: var(--bg); }
+  .tab .n { opacity: .6; margin-left: 6px; font-size: 12px; }
+
+  /* bento */
+  .bento { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 14px; }
+  .tile { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); min-width: 0; }
+  .c3 { grid-column: span 3; } .c4 { grid-column: span 4; } .c5 { grid-column: span 5; } .c6 { grid-column: span 6; } .c7 { grid-column: span 7; } .c8 { grid-column: span 8; } .c12 { grid-column: span 12; }
+  @media (max-width: 960px) { .c3 { grid-column: span 6; } .c4, .c5, .c6, .c7, .c8 { grid-column: span 12; } }
+  @media (max-width: 520px) { .c3 { grid-column: span 12; } }
+  .eyebrow { font: 600 11px/1 "Poppins", sans-serif; text-transform: uppercase; letter-spacing: .09em; color: var(--muted); margin: 0 0 12px; }
+  .big { font: 600 34px/1 "Poppins", sans-serif; letter-spacing: -0.02em; }
+  .hint { color: var(--muted); font-size: 13px; margin-top: 6px; }
+
+  .callout { background: var(--info-soft); border-color: transparent; display: flex; gap: 14px; }
+  .callout .bar { width: 3px; border-radius: 3px; background: var(--info); flex: none; }
+  .callout h3 { font: 600 14px/1.3 "Poppins", sans-serif; margin: 0 0 6px; color: var(--info); }
+  .callout p { margin: 0; }
+
+  .pipe { display: flex; height: 10px; border-radius: 999px; overflow: hidden; background: var(--surface-2); margin: 6px 0 14px; }
+  .pipe span { display: block; height: 100%; }
+  .legend { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; font-size: 13px; }
+  .legend div { display: flex; align-items: center; justify-content: space-between; }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 8px; flex: none; }
+
+  .list { display: flex; flex-direction: column; }
+  .li { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 11px 0; border-top: 1px solid var(--line); }
+  .li:first-child { border-top: 0; padding-top: 0; }
+  .li b { font-weight: 600; }
+  .muted { color: var(--muted); }
+  .small { font-size: 13px; }
+  .pill { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px; font-size: 12px; color: var(--muted); white-space: nowrap; }
+  .pill.ok { color: var(--s-applied); border-color: color-mix(in srgb, var(--s-applied) 35%, transparent); }
+
+  /* controls */
+  .bar-controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 14px; }
+  .chip { border: 1px solid var(--line); background: var(--surface); color: var(--muted); border-radius: 999px; padding: 5px 13px; font-size: 13px; cursor: pointer; }
   .chip[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); border-color: transparent; font-weight: 600; }
-  input[type=search] { margin-left: auto; border: 1px solid var(--line); background: var(--bg); color: var(--ink); border-radius: 8px; padding: 6px 10px; font-family: inherit; font-size: 13px; min-width: 160px; }
-  .row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 16px; padding: 16px; border-bottom: 1px solid var(--line); }
-  .row:last-child { border-bottom: 0; }
-  .co { font-family: "Poppins", sans-serif; font-weight: 500; }
-  .role { color: var(--ink); }
-  .meta { color: var(--muted); font-size: 13px; margin-top: 2px; }
-  .note { color: var(--muted); font-size: 13px; margin-top: 6px; }
-  .actions { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
-  select { border: 1px solid var(--line); background: var(--bg); color: var(--ink); border-radius: 8px; padding: 4px 8px; font-family: inherit; font-size: 13px; }
-  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
-  .open { font-size: 13px; color: var(--accent); text-decoration: none; }
-  .open:hover { text-decoration: underline; }
-  .empty { padding: 40px 16px; text-align: center; color: var(--muted); }
-  aside .card { padding: 18px; margin-bottom: 16px; }
-  aside h2 { font: 600 11.5px/1 "Poppins", sans-serif; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 0 0 12px; }
-  aside p { margin: 0 0 4px; }
-  .small { font-size: 13px; color: var(--muted); }
-  .item { margin-bottom: 10px; }
-  .item b { font-weight: 600; font-size: 14px; }
-  .flag { background: var(--warn-soft); color: var(--warn); border-radius: 8px; padding: 8px 10px; font-size: 13px; margin-bottom: 8px; }
-  .links a { margin-right: 14px; font-size: 13px; color: var(--accent); }
+  .search { margin-left: auto; border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: 7px 12px; min-width: 220px; }
+  .search:focus, select:focus, .chip:focus-visible, .tab:focus-visible, .ghost:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  select { border: 1px solid var(--line); background: var(--surface-2); border-radius: 8px; padding: 4px 8px; }
+
+  /* job + company cards */
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  .card h3 { font: 600 15px/1.3 "Poppins", sans-serif; margin: 0; }
+  .row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .link { color: var(--accent); text-decoration: none; font-size: 13px; font-weight: 500; }
+  .link:hover { text-decoration: underline; }
+  .roles { border-top: 1px solid var(--line); padding-top: 8px; display: flex; flex-direction: column; gap: 8px; }
+  .role { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 13.5px; }
+  .empty { padding: 36px 16px; text-align: center; color: var(--muted); border: 1px dashed var(--line); border-radius: var(--radius); }
+
+  /* outreach */
+  .tpl { background: var(--surface-2); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; font-size: 13.5px; white-space: pre-wrap; }
+  .tpl-head { display: flex; justify-content: space-between; align-items: center; margin: 14px 0 8px; font-weight: 600; font-family: "Poppins", sans-serif; font-size: 13.5px; }
+  .tpl-head:first-of-type { margin-top: 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  th { text-align: left; font: 600 11px/1 "Poppins", sans-serif; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); padding: 0 8px 10px 0; }
+  td { padding: 10px 8px 10px 0; border-top: 1px solid var(--line); vertical-align: top; }
+  .scroll { overflow-x: auto; }
+  footer { margin-top: 28px; color: var(--muted); font-size: 12.5px; }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <header>
+  <header class="top">
     <div>
       <h1 id="name"></h1>
       <div class="sub" id="tagline"></div>
     </div>
-    <button class="toggle" id="theme" type="button">Toggle theme</button>
+    <button class="ghost" id="theme" type="button">Toggle theme</button>
   </header>
 
-  <section class="stats" id="stats"></section>
-
-  <div class="grid">
-    <main class="card">
-      <div class="filters" id="filters"></div>
-      <div id="list"></div>
-    </main>
-    <aside>
-      <div class="card"><h2>Profile</h2><div id="profile"></div></div>
-      <div class="card"><h2>Experience</h2><div id="exp"></div></div>
-      <div class="card"><h2>To fix before applying</h2><div id="flags"></div></div>
-    </aside>
-  </div>
+  <nav class="tabs" role="tablist" id="tabs"></nav>
+  <main id="view"></main>
+  <footer id="foot"></footer>
 </div>
+
 <script>
-// Source of truth for the dashboard. status: lead | verified | ready | applied | interview | closed
+/* ============ DATA (edit here) ============ */
+window.META = { updated: "11 Oct 2026" };
+
 window.PROFILE = {
   name: "Korada Chandana Priya",
   title: "B.Tech CSE, GITAM Visakhapatnam",
   grad: "Aug 2027",
   cgpa: "8.56",
+  tracks: [
+    { name: "Data and BI", detail: "SQL, Python, ClickHouse, Superset, NiFi" },
+    { name: "ML and LLM", detail: "PyTorch, TensorFlow, Hugging Face, RAG, Telugu NLP" },
+    { name: "Software", detail: "Python, Java, C, TypeScript, Docker, PostgreSQL" }
+  ],
   links: [
     { label: "GitHub", url: "https://github.com/chandanapriyaaa" },
     { label: "LinkedIn", url: "https://www.linkedin.com/in/kchandanapriya/" }
-  ],
-  tracks: [
-    { name: "Data and BI", detail: "SQL, Python, ClickHouse, Superset, NiFi, PostgreSQL" },
-    { name: "ML and LLM", detail: "scikit-learn, TensorFlow, Hugging Face, RAG, Telugu NLP" },
-    { name: "Software", detail: "Python, Java, C, TypeScript, Docker" }
-  ],
-  experience: [
-    { org: "DRDO RCI", role: "Data Engineering Intern", when: "May 2026 to Jun 2026" },
-    { org: "VISWAM.AI with IIIT-H", role: "AI Developer Intern", when: "Jun 2025 to Nov 2025" },
-    { org: "MedTourEasy", role: "Data Analyst Trainee", when: "Jun 2025 to Jul 2025" }
-  ],
-  flags: [
-    "Check the email and current CTC rules before each form.",
-    "MedTourEasy dates set to Jun to Jul 2025 to match LinkedIn (old resume said May to Jun).",
-    "Resume versions ready in /resumes: Data, ML, SWE. Pick by role track."
   ]
 };
 
+window.RESUMES = [
+  { name: "ML", use: "AI, LLM, research and data science intern roles", lead: "NLP, RAG and LLM work first" },
+  { name: "SWE", use: "Backend, full-stack and software intern roles", lead: "Systems and data platform work first" },
+  { name: "Data", use: "Data analyst and BI roles", lead: "SQL, ETL and dashboards first" }
+];
+
+window.ALERTS = [
+  { q: "software engineer intern, India, Easy Apply", on: true },
+  { q: "data analyst intern, India, Easy Apply", on: true },
+  { q: "machine learning intern, India, Easy Apply", on: false, note: "Toggle clicked, needs a check on LinkedIn" }
+];
+
+window.NOTES = [
+  { title: "Market note", body: "Beyond these applications, the search is thin right now. Most big-company 2027 intern cycles open between November and January, so alerts are on and the big portals get rechecked weekly." }
+];
+
+window.NEXT = [
+  "Recheck Amazon, Microsoft, Intuit, Salesforce and Adobe careers pages weekly from November",
+  "Confirm the machine learning intern alert is active on LinkedIn",
+  "Send outreach to recruiters and GITAM alumni at the companies applied to",
+  "Full-time roles only above 7 to 8 LPA"
+];
+
+/* status: lead | verified | ready | applied | interview | closed (closed means skipped or not a fit) */
 window.JOBS = [
-  { id: 1, company: "Amazon", role: "SDE Intern, India", type: "Internship", track: "Software", location: "Bengaluru, Hyderabad, Chennai", url: "https://www.amazon.jobs/", status: "lead", note: "Checked 10 Oct 2026: no SDE intern postings on amazon.jobs for India. Recheck weekly. Not signed in." },
+  { id: 11, company: "Smytten (PulseAI Research)", role: "SDE Intern, Backend", type: "Internship", track: "Software", location: "Bengaluru, on-site", url: "https://www.linkedin.com/jobs/view/4471337817/", status: "applied", date: "2026-10-11", resume: "SWE", via: "LinkedIn Easy Apply", note: "GenAI backend, RAG, APIs. Strong fit with MAS-Compliance. 4 to 6 month paid term." },
+  { id: 13, company: "Sony Research India", role: "Data Science Intern", type: "Internship", track: "ML and LLM", location: "Remote, Bengaluru team", url: "https://www.linkedin.com/jobs/view/4478080141/", status: "applied", date: "2026-10-11", resume: "ML", via: "LinkedIn Easy Apply", note: "Paid, 6 months from first week of Nov 2026, 9 to 6 IST weekdays." },
+  { id: 14, company: "Sony Research India", role: "LLM Research Intern", type: "Internship", track: "ML and LLM", location: "Remote, Bengaluru team", url: "https://www.linkedin.com/jobs/view/4478061801/", status: "applied", date: "2026-10-11", resume: "ML", via: "LinkedIn Easy Apply", note: "Fits the RAG and LLM project work." },
+  { id: 15, company: "Sony Research India", role: "Speech Recognition Intern", type: "Internship", track: "ML and LLM", location: "Remote, Bengaluru team", url: "https://www.linkedin.com/jobs/view/4478019878/", status: "applied", date: "2026-10-11", resume: "ML", via: "LinkedIn Easy Apply", note: "Fits the Telugu NLP and speech emotion work." },
+  { id: 16, company: "Sprinto", role: "AI Implementation Intern", type: "Internship", track: "ML and LLM", location: "Remote, Bengaluru team", url: "https://www.linkedin.com/jobs/search/?keywords=Sprinto%20AI%20Implementation%20Intern", status: "applied", date: "2026-10-11", resume: "ML", via: "LinkedIn Easy Apply", note: "Compliance automation startup, Accel backed. Close match with the compliance copilot project." },
+
+  { id: 1, company: "Amazon", role: "SDE Intern, India", type: "Internship", track: "Software", location: "Bengaluru, Hyderabad, Chennai", url: "https://www.amazon.jobs/", status: "lead", note: "Checked 10 Oct 2026: no SDE intern postings for India. Recheck weekly." },
   { id: 2, company: "Microsoft", role: "Software Engineering Intern (Explore Microsoft India)", type: "Internship", track: "Software", location: "Bengaluru, Hyderabad", url: "https://careers.microsoft.com/", status: "lead", note: "Rolling. 8 week India edition. Verify live posting." },
-  { id: 3, company: "Salesforce", role: "Summer 2027 Software Engineer Intern", type: "Internship", track: "Software", location: "Hyderabad, Bengaluru", url: "https://careers.salesforce.com/", status: "lead", note: "Reported job ID JR337715 from a third party. Confirm on Salesforce portal." },
-  { id: 4, company: "Intuit", role: "Software Engineering Intern, Summer 2027", type: "Internship", track: "Software", location: "Bengaluru", url: "https://jobs.intuit.com/", status: "lead", note: "Reported job ID 22939 from a third party. Confirm on Intuit portal." },
-  { id: 5, company: "Google", role: "Software Engineering Intern, Summer 2027", type: "Internship", track: "Software", location: "Bengaluru, Hyderabad, Pune", url: "https://www.google.com/about/careers/applications/", status: "lead", note: "Reported deadline 28 Jun 2026 has passed. Check if reopened." },
+  { id: 3, company: "Salesforce", role: "Summer 2027 Software Engineer Intern", type: "Internship", track: "Software", location: "Hyderabad, Bengaluru", url: "https://careers.salesforce.com/", status: "lead", note: "Reported job ID JR337715 from a third party. Confirm on the portal." },
+  { id: 4, company: "Intuit", role: "Software Engineering Intern, Summer 2027", type: "Internship", track: "Software", location: "Bengaluru", url: "https://jobs.intuit.com/", status: "lead", note: "Reported job ID 22939 from a third party. Confirm on the portal." },
+  { id: 5, company: "Google", role: "Software Engineering Intern, Summer 2027", type: "Internship", track: "Software", location: "Bengaluru, Hyderabad, Pune", url: "https://www.google.com/about/careers/applications/", status: "lead", note: "Reported deadline of 28 Jun 2026 has passed. Check if it reopens." },
   { id: 6, company: "Adobe", role: "Software Engineering Intern, Summer 2027", type: "Internship", track: "Software", location: "Bengaluru, Noida", url: "https://careers.adobe.com/", status: "lead", note: "Only seen in an aggregator list. No details confirmed." },
-  { id: 7, company: "Labcorp", role: "Intern, Data Analytics Associate", type: "Internship", track: "Data and BI", location: "Bengaluru", url: "https://careers.labcorp.com/", status: "lead", note: "Aggregator lists batch 2026 and 2027. No deadline shown. Strong fit for SQL and BI." },
-  { id: 8, company: "Infosys", role: "InStep Internship", type: "Internship", track: "ML and LLM", location: "India", url: "https://www.infosys.com/careers/", status: "lead", note: "8 weeks from 18 Jan 2027 per one listing. For penultimate and final year students." },
+  { id: 7, company: "Labcorp", role: "Intern, Data Analytics Associate", type: "Internship", track: "Data and BI", location: "Bengaluru", url: "https://careers.labcorp.com/", status: "lead", note: "Aggregator lists batch 2026 and 2027. Strong fit for SQL and BI. Verify first." },
+  { id: 8, company: "Infosys", role: "InStep Internship", type: "Internship", track: "ML and LLM", location: "India", url: "https://www.infosys.com/careers/", status: "lead", note: "8 weeks from 18 Jan 2027 per one listing. Penultimate and final year students." },
   { id: 9, company: "Airbus India", role: "Data Analysis Intern", type: "Internship", track: "Data and BI", location: "Bengaluru", url: "https://www.airbus.com/en/careers", status: "closed", note: "Last cycle closed 19 Nov 2025. Watch for the next cycle." },
-  { id: 10, company: "Walmart Global Tech", role: "Grad Intern (CA Industrial Trainee, Finance)", type: "Internship", track: "Other", location: "Bengaluru", url: "https://careers.walmart.com/", status: "closed", note: "Checked on LinkedIn 11 Oct 2026: this is a CA finance trainee role, not engineering. Not a fit. No SDE intern found yet." },
-  { id: 11, company: "Smytten (PulseAI Research)", role: "SDE Intern, Backend", type: "Internship", track: "Software", location: "Bengaluru, on-site", url: "https://www.linkedin.com/jobs/view/4471337817/", status: "applied", note: "Applied 11 Oct 2026 via LinkedIn Easy Apply with the SWE resume." },
-  { id: 12, company: "Weekday (YC W21)", role: "Software Engineer Intern", type: "Internship", track: "Software", location: "Bengaluru, remote", url: "https://www.linkedin.com/jobs/search/?keywords=software%20engineer%20intern&location=India&f_AL=true", status: "closed", note: "Skipped. Posted by a recruiter platform for an unnamed client and hands off to an external form. Stipend 30k to 50k a month." },
-  { id: 13, company: "Sony Research India", role: "Data Science Intern", type: "Internship", track: "ML and LLM", location: "Remote, Bengaluru team", url: "https://www.linkedin.com/jobs/view/4478080141/", status: "applied", note: "Applied 11 Oct 2026 with the ML resume. Paid, 6 months from first week of Nov 2026, 9 to 6 IST weekdays." },
-  { id: 14, company: "Sony Research India", role: "LLM Research Intern", type: "Internship", track: "ML and LLM", location: "Remote, Bengaluru team", url: "https://www.linkedin.com/jobs/view/4478061801/", status: "applied", note: "Applied 11 Oct 2026 with the ML resume." },
-  { id: 15, company: "Sony Research India", role: "Speech Recognition Intern", type: "Internship", track: "ML and LLM", location: "Remote, Bengaluru team", url: "https://www.linkedin.com/jobs/view/4478019878/", status: "applied", note: "Applied 11 Oct 2026 with the ML resume. Fits the Telugu NLP and speech emotion work." }
+  { id: 10, company: "Walmart Global Tech", role: "Grad Intern (CA Industrial Trainee, Finance)", type: "Internship", track: "Other", location: "Bengaluru", url: "https://careers.walmart.com/", status: "closed", note: "Finance trainee role, not engineering. Skipped." },
+  { id: 12, company: "Weekday (YC W21)", role: "Software Engineer Intern", type: "Internship", track: "Software", location: "Remote", url: "https://www.linkedin.com/jobs/view/4453416357/", status: "closed", note: "Skipped. Recruiter platform listing for an unnamed client, external form." },
+  { id: 17, company: "Forage AI", role: "Research Associate Intern", type: "Internship", track: "Data and BI", location: "Remote", url: "https://www.linkedin.com/jobs/search/?keywords=Forage%20AI%20Research%20Associate%20Intern", status: "closed", note: "Skipped. 10k a month, manual LinkedIn research work." }
+];
+
+/* Add a row each time a message is sent. status: drafted | sent | replied | referred */
+window.OUTREACH = [];
+
+window.TEMPLATES = [
+  { name: "Connection note (under 200 characters)", body: "Hi {first}, I am Chandana, a final-year CSE student at GITAM. I applied for the {role} role at {company} and would love to connect and learn more about the team." },
+  { name: "Referral request", body: "Hi {first}, I hope you are doing well. I am Chandana Priya, a final-year B.Tech CSE student at GITAM (graduating Aug 2027). I recently applied for the {role} role at {company}.\n\nMy background includes a data engineering internship at DRDO RCI (NiFi, ClickHouse, Superset), an AI internship at VISWAM.AI with IIIT-H, and a RAG-based compliance copilot project.\n\nIf you feel my profile is a fit, I would be grateful for a referral or any advice on the process. I am happy to share my resume. Thank you for your time." },
+  { name: "Recruiter note", body: "Hi {first}, I am Chandana, a final-year CSE student at GITAM. I have applied for the {role} role at {company} and wanted to introduce myself. I have hands-on experience in data engineering and LLM applications and would be glad to share more. Thank you." },
+  { name: "Follow up after a week", body: "Hi {first}, a quick follow up on my earlier note about the {role} role at {company}. I remain very interested and can share anything that helps. Thank you for your time." }
 ];
 </script>
+
 <script>
-  const STATUSES = [
-    ["lead", "Lead"], ["verified", "Verified"], ["ready", "Ready to apply"],
-    ["applied", "Applied"], ["interview", "Interview"], ["closed", "Closed"]
-  ];
-  const KEY = "chandana-job-status-v1";
-  const store = (() => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } })();
-  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {} };
-  const statusOf = j => store[j.id] || j.status;
-  const state = { status: "all", track: "all", q: "" };
-  const $ = id => document.getElementById(id);
-  const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-  const colour = s => `var(--s-${s})`;
+/* ============ STATE + HELPERS ============ */
+const STATUSES = [
+  ["lead", "Lead"], ["verified", "Verified"], ["ready", "Ready"], ["applied", "Applied"], ["interview", "Interview"], ["closed", "Skipped"]
+];
+const LABEL = Object.fromEntries(STATUSES);
+const KEY = "chandana-dashboard-v2";
+const store = (() => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } })();
+const persist = () => { try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {} };
+const statusOf = j => store[j.id] || j.status;
+const state = { tab: "overview", status: "all", track: "all", q: "", cq: "" };
 
-  const P = window.PROFILE;
-  $("name").textContent = P.name;
-  $("tagline").textContent = `${P.title}, graduating ${P.grad}, CGPA ${P.cgpa}`;
-  $("profile").innerHTML =
-    P.tracks.map(t => `<div class="item"><b>${esc(t.name)}</b><div class="small">${esc(t.detail)}</div></div>`).join("") +
-    
-    `<div class="links" style="margin-top:10px">${P.links.map(l => `<a href="${l.url}" target="_blank" rel="noopener">${esc(l.label)}</a>`).join("")}</div>`;
-  $("exp").innerHTML = P.experience.map(e => `<div class="item"><b>${esc(e.role)}</b><div class="small">${esc(e.org)}<br>${esc(e.when)}</div></div>`).join("");
-  $("flags").innerHTML = P.flags.map(f => `<div class="flag">${esc(f)}</div>`).join("");
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const col = s => `var(--s-${s})`;
+const fmtDate = d => d ? new Date(d + "T00:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "short" }) : "";
 
-  function renderStats() {
-    const c = k => JOBS.filter(j => statusOf(j) === k).length;
-    const cells = [["Tracked", JOBS.length], ["Verified", c("verified") + c("ready")], ["Applied", c("applied")], ["Interviews", c("interview")]];
-    $("stats").innerHTML = cells.map(([l, n]) => `<div class="stat"><b>${n}</b><span>${l}</span></div>`).join("");
-  }
+const jobs = () => window.JOBS;
+const applied = () => jobs().filter(j => statusOf(j) === "applied" || statusOf(j) === "interview");
+const byCompany = () => {
+  const m = new Map();
+  jobs().forEach(j => { if (!m.has(j.company)) m.set(j.company, []); m.get(j.company).push(j); });
+  return [...m.entries()].map(([name, list]) => ({
+    name, list,
+    applied: list.filter(j => ["applied", "interview"].includes(statusOf(j))).length
+  })).sort((a, b) => b.applied - a.applied || b.list.length - a.list.length || a.name.localeCompare(b.name));
+};
 
-  function renderFilters() {
-    const tracks = ["all", ...new Set(JOBS.map(j => j.track))];
-    const chip = (group, value, label) => `<button class="chip" type="button" data-g="${group}" data-v="${value}" aria-pressed="${state[group] === value}">${esc(label)}</button>`;
-    $("filters").innerHTML =
-      chip("status", "all", "All") + STATUSES.map(([k, l]) => chip("status", k, l)).join("") +
-      `<span style="width:8px"></span>` + tracks.map(t => chip("track", t, t === "all" ? "Any track" : t)).join("") +
-      `<input type="search" id="q" placeholder="Search" value="${esc(state.q)}">`;
-    $("filters").querySelectorAll(".chip").forEach(b => b.onclick = () => { state[b.dataset.g] = b.dataset.v; render(); });
-    const q = $("q");
-    q.oninput = () => { state.q = q.value; renderList(); };
-  }
+/* ============ COMPONENTS ============ */
+const Dot = s => `<span class="dot" style="background:${col(s)}"></span>`;
 
-  function renderList() {
-    const q = state.q.trim().toLowerCase();
-    const rows = JOBS.filter(j =>
-      (state.status === "all" || statusOf(j) === state.status) &&
-      (state.track === "all" || j.track === state.track) &&
-      (!q || `${j.company} ${j.role} ${j.location}`.toLowerCase().includes(q)));
-    if (!rows.length) { $("list").innerHTML = `<div class="empty">Nothing matches these filters.</div>`; return; }
-    $("list").innerHTML = rows.map(j => {
-      const s = statusOf(j);
-      return `<div class="row">
-        <div>
-          <div><span class="co">${esc(j.company)}</span> <span class="role">${esc(j.role)}</span></div>
-          <div class="meta">${esc(j.type)} · ${esc(j.track)} · ${esc(j.location)}</div>
-          <div class="note">${esc(j.note)}</div>
-        </div>
-        <div class="actions">
-          <label><span class="dot" style="background:${colour(s)}"></span><select data-id="${j.id}">${STATUSES.map(([k, l]) => `<option value="${k}"${k === s ? " selected" : ""}>${l}</option>`).join("")}</select></label>
-          <a class="open" href="${j.url}" target="_blank" rel="noopener">Open careers page</a>
-        </div>
-      </div>`;
-    }).join("");
-    $("list").querySelectorAll("select").forEach(sel => sel.onchange = () => { store[sel.dataset.id] = sel.value; save(); render(); });
-  }
+const StatusSelect = j => `<label class="row" style="gap:6px">${Dot(statusOf(j))}<select data-job="${j.id}" aria-label="Status for ${esc(j.role)}">${STATUSES.map(([k, l]) => `<option value="${k}"${k === statusOf(j) ? " selected" : ""}>${l}</option>`).join("")}</select></label>`;
 
-  function render() { renderStats(); renderFilters(); renderList(); }
-  render();
+const Stat = (label, value, hint) => `<section class="tile c3"><p class="eyebrow">${label}</p><div class="big">${value}</div><div class="hint">${hint}</div></section>`;
 
-  $("theme").onclick = () => {
-    const el = document.documentElement;
-    const dark = el.dataset.theme ? el.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
-    el.dataset.theme = dark ? "light" : "dark";
-  };
+const Callout = n => `<section class="tile callout c8"><div class="bar"></div><div><h3>${esc(n.title)}</h3><p>${esc(n.body)}</p></div></section>`;
+
+const Pipeline = () => {
+  const total = jobs().length || 1;
+  const counts = STATUSES.map(([k, l]) => [k, l, jobs().filter(j => statusOf(j) === k).length]);
+  return `<section class="tile c4"><p class="eyebrow">Pipeline</p>
+    <div class="pipe" role="img" aria-label="Status split">${counts.map(([k, , n]) => n ? `<span style="width:${(n / total) * 100}%;background:${col(k)}"></span>` : "").join("")}</div>
+    <div class="legend">${counts.map(([k, l, n]) => `<div><span>${Dot(k)}${l}</span><b>${n}</b></div>`).join("")}</div></section>`;
+};
+
+const Recent = () => {
+  const rows = applied().sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+  return `<section class="tile c6"><p class="eyebrow">Applied</p><div class="list">${rows.length ? rows.map(j => `
+    <div class="li"><div><b>${esc(j.company)}</b><div class="small muted">${esc(j.role)}</div></div>
+    <div style="text-align:right"><span class="pill ok">${fmtDate(j.date)}</span><div class="small muted" style="margin-top:4px">${esc(j.resume || "")} resume</div></div></div>`).join("") : `<div class="muted">Nothing yet.</div>`}</div></section>`;
+};
+
+const Next = () => `<section class="tile c6"><p class="eyebrow">Next actions</p><div class="list">${NEXT.map(t => `<div class="li"><span>${esc(t)}</span></div>`).join("")}</div></section>`;
+
+const Resumes = () => `<section class="tile c4"><p class="eyebrow">Resume versions</p><div class="list">${RESUMES.map(r => `<div class="li"><div><b>${esc(r.name)}</b><div class="small muted">${esc(r.use)}</div></div></div>`).join("")}</div></section>`;
+
+const Alerts = () => `<section class="tile c4"><p class="eyebrow">LinkedIn alerts</p><div class="list">${ALERTS.map(a => `<div class="li"><div><span>${esc(a.q)}</span>${a.note ? `<div class="small muted">${esc(a.note)}</div>` : ""}</div><span class="pill ${a.on ? "ok" : ""}">${a.on ? "On" : "Check"}</span></div>`).join("")}</div></section>`;
+
+const Profile = () => `<section class="tile c4"><p class="eyebrow">Profile</p>
+  <div class="list">${PROFILE.tracks.map(t => `<div class="li"><div><b>${esc(t.name)}</b><div class="small muted">${esc(t.detail)}</div></div></div>`).join("")}</div>
+  <div style="margin-top:12px">${PROFILE.links.map(l => `<a class="link" style="margin-right:14px" href="${l.url}" target="_blank" rel="noopener">${esc(l.label)}</a>`).join("")}</div></section>`;
+
+const JobCard = j => `<article class="card">
+  <div class="row"><h3>${esc(j.company)}</h3>${StatusSelect(j)}</div>
+  <div>${esc(j.role)}</div>
+  <div class="small muted">${esc(j.type)} · ${esc(j.track)} · ${esc(j.location)}</div>
+  <div class="small muted">${esc(j.note)}</div>
+  <div class="row"><span class="small muted">${j.date ? "Applied " + fmtDate(j.date) + (j.resume ? ", " + esc(j.resume) + " resume" : "") : ""}</span><a class="link" href="${j.url}" target="_blank" rel="noopener">Open posting</a></div>
+</article>`;
+
+const CompanyCard = c => `<article class="card">
+  <div class="row"><h3>${esc(c.name)}</h3><span class="pill ${c.applied ? "ok" : ""}">${c.applied} applied of ${c.list.length}</span></div>
+  <div class="roles">${c.list.map(j => `<div class="role"><span>${esc(j.role)}</span><span class="row" style="gap:6px">${Dot(statusOf(j))}<span class="small muted">${LABEL[statusOf(j)]}</span></span></div>`).join("")}</div>
+</article>`;
+
+/* ============ VIEWS ============ */
+const Overview = () => {
+  const a = applied();
+  const companies = new Set(a.map(j => j.company)).size;
+  const sent = OUTREACH.filter(o => o.status !== "drafted").length;
+  return `<div class="bento">
+    ${Stat("Applied", a.length, `${jobs().length} roles tracked`)}
+    ${Stat("Companies", companies, "with at least one application")}
+    ${Stat("Interviews", jobs().filter(j => statusOf(j) === "interview").length, "none yet")}
+    ${Stat("Outreach sent", sent, "messages to recruiters and alumni")}
+    ${NOTES.map(Callout).join("")}
+    ${Pipeline()}
+    ${Recent()}
+    ${Next()}
+    ${Resumes()}
+    ${Alerts()}
+    ${Profile()}
+  </div>`;
+};
+
+const Jobs = () => {
+  const q = state.q.trim().toLowerCase();
+  const tracks = ["all", ...new Set(jobs().map(j => j.track))];
+  const list = jobs().filter(j => (state.status === "all" || statusOf(j) === state.status) && (state.track === "all" || j.track === state.track) && (!q || `${j.company} ${j.role} ${j.location}`.toLowerCase().includes(q)));
+  const chip = (g, v, l) => `<button class="chip" type="button" data-g="${g}" data-v="${v}" aria-pressed="${state[g] === v}">${esc(l)}</button>`;
+  return `<div class="bar-controls">
+      ${chip("status", "all", "All")}${STATUSES.map(([k, l]) => chip("status", k, l)).join("")}
+      <span style="width:6px"></span>${tracks.map(t => chip("track", t, t === "all" ? "Any track" : t)).join("")}
+      <input class="search" id="q" type="search" placeholder="Search roles" value="${esc(state.q)}" aria-label="Search roles">
+    </div>
+    <div class="cards">${list.length ? list.map(JobCard).join("") : ""}</div>${list.length ? "" : `<div class="empty">Nothing matches these filters.</div>`}`;
+};
+
+const Companies = () => {
+  const q = state.cq.trim().toLowerCase();
+  const list = byCompany().filter(c => !q || c.name.toLowerCase().includes(q) || c.list.some(j => j.role.toLowerCase().includes(q)));
+  return `<div class="bar-controls"><span class="muted small">${list.length} companies</span>
+      <input class="search" id="cq" type="search" placeholder="Search companies or roles" value="${esc(state.cq)}" aria-label="Search companies"></div>
+    <div class="cards">${list.map(CompanyCard).join("")}</div>${list.length ? "" : `<div class="empty">No company matches.</div>`}`;
+};
+
+const Outreach = () => {
+  const targets = byCompany().filter(c => c.applied);
+  const rows = OUTREACH.length ? `<div class="scroll"><table><thead><tr><th>Person</th><th>Company</th><th>Role applied</th><th>Channel</th><th>Status</th><th>Date</th></tr></thead><tbody>
+    ${OUTREACH.map(o => `<tr><td><b>${esc(o.name)}</b><div class="small muted">${esc(o.title)}</div></td><td>${esc(o.company)}</td><td>${esc(o.role)}</td><td>${esc(o.channel)}</td><td><span class="pill ${o.status === "replied" || o.status === "referred" ? "ok" : ""}">${esc(o.status)}</span></td><td>${fmtDate(o.date)}</td></tr>`).join("")}
+    </tbody></table></div>` : `<div class="empty">No messages sent yet. Targets and templates are ready.</div>`;
+  return `<div class="bento">
+    <section class="tile c7"><p class="eyebrow">Tracker</p>${rows}</section>
+    <section class="tile c5"><p class="eyebrow">Who to reach at each company</p><div class="list">
+      ${targets.map(c => `<div class="li"><div><b>${esc(c.name)}</b><div class="small muted">Talent acquisition, engineering managers, GITAM alumni</div></div><span class="pill">${c.applied} role${c.applied > 1 ? "s" : ""}</span></div>`).join("")}
+    </div></section>
+    <section class="tile c12"><p class="eyebrow">Message templates</p>
+      ${TEMPLATES.map((t, i) => `<div class="tpl-head"><span>${esc(t.name)}</span><button class="ghost" type="button" data-copy="${i}">Copy</button></div><div class="tpl">${esc(t.body)}</div>`).join("")}
+    </section></div>`;
+};
+
+const VIEWS = { overview: Overview, jobs: Jobs, companies: Companies, outreach: Outreach };
+
+/* ============ SHELL ============ */
+function renderTabs() {
+  const counts = { jobs: jobs().length, companies: byCompany().length, outreach: OUTREACH.length };
+  $("#tabs").innerHTML = [["overview", "Overview"], ["jobs", "Jobs"], ["companies", "Companies"], ["outreach", "Outreach"]]
+    .map(([k, l]) => `<button class="tab" role="tab" type="button" data-tab="${k}" aria-selected="${state.tab === k}">${l}${counts[k] != null ? `<span class="n">${counts[k]}</span>` : ""}</button>`).join("");
+}
+function render() {
+  renderTabs();
+  $("#view").innerHTML = VIEWS[state.tab]();
+  const active = document.activeElement;
+}
+function setTab(t) { state.tab = VIEWS[t] ? t : "overview"; history.replaceState(null, "", "#" + state.tab); render(); }
+
+document.addEventListener("click", e => {
+  const t = e.target.closest("[data-tab]"); if (t) return setTab(t.dataset.tab);
+  const c = e.target.closest(".chip"); if (c) { state[c.dataset.g] = c.dataset.v; return render(); }
+  const cp = e.target.closest("[data-copy]");
+  if (cp) { const body = TEMPLATES[+cp.dataset.copy].body; try { navigator.clipboard.writeText(body); cp.textContent = "Copied"; setTimeout(() => cp.textContent = "Copy", 1200); } catch (x) {} }
+});
+document.addEventListener("change", e => {
+  const s = e.target.closest("select[data-job]"); if (s) { store[s.dataset.job] = s.value; persist(); render(); }
+});
+document.addEventListener("input", e => {
+  if (e.target.id === "q") { state.q = e.target.value; const pos = e.target.selectionStart; render(); const n = $("#q"); n.focus(); n.setSelectionRange(pos, pos); }
+  if (e.target.id === "cq") { state.cq = e.target.value; const pos = e.target.selectionStart; render(); const n = $("#cq"); n.focus(); n.setSelectionRange(pos, pos); }
+});
+$("#theme").onclick = () => {
+  const el = document.documentElement;
+  const dark = el.dataset.theme ? el.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  el.dataset.theme = dark ? "light" : "dark";
+};
+
+$("#name").textContent = PROFILE.name;
+$("#tagline").textContent = `${PROFILE.title}, graduating ${PROFILE.grad}, CGPA ${PROFILE.cgpa}`;
+$("#foot").textContent = `Last updated ${META.updated}. Status edits made here are saved in this browser only.`;
+setTab((location.hash || "").replace("#", "") || "overview");
 </script>
 </body>
 </html>
