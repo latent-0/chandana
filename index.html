@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Job Search Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f6f5f2; --surface: #ffffff; --ink: #1b1b1a; --muted: #6b6a66; --line: #e6e4de;
+    --accent: #2f4f46; --accent-soft: #e4ece9; --warn: #8a5a14; --warn-soft: #f6ecd9;
+    --s-lead: #6b6a66; --s-verified: #2f5d8a; --s-ready: #7a5b9a; --s-applied: #2f6b3f; --s-interview: #a14b2a; --s-closed: #a8a69f;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #151514; --surface: #1d1d1b; --ink: #ecebe6; --muted: #9a988f; --line: #2c2c29;
+      --accent: #8fb8a8; --accent-soft: #23302b; --warn: #e0b36a; --warn-soft: #302a1c;
+      --s-lead: #9a988f; --s-verified: #7fb0dc; --s-ready: #b79bd6; --s-applied: #7fc08f; --s-interview: #e39a78; --s-closed: #66645e;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #151514; --surface: #1d1d1b; --ink: #ecebe6; --muted: #9a988f; --line: #2c2c29;
+    --accent: #8fb8a8; --accent-soft: #23302b; --warn: #e0b36a; --warn-soft: #302a1c;
+    --s-lead: #9a988f; --s-verified: #7fb0dc; --s-ready: #b79bd6; --s-applied: #7fc08f; --s-interview: #e39a78; --s-closed: #66645e;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 400 14.5px/1.55 "Inter", system-ui, sans-serif; }
+  a { color: inherit; }
+  .wrap { max-width: 1160px; margin: 0 auto; padding: 40px 24px 64px; }
+  header { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin-bottom: 28px; }
+  h1 { font: 600 26px/1.2 "Poppins", sans-serif; margin: 0 0 6px; letter-spacing: -0.01em; }
+  .sub { color: var(--muted); font-size: 14px; }
+  .toggle { border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 6px 14px; font-family: inherit; font-size: 13px; cursor: pointer; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 28px; }
+  .stat { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+  .stat b { display: block; font: 600 24px/1.1 "Poppins", sans-serif; }
+  .stat span { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+  .grid { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 24px; align-items: start; }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; }
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; padding: 14px 16px; border-bottom: 1px solid var(--line); align-items: center; }
+  .chip { border: 1px solid var(--line); background: transparent; color: var(--muted); border-radius: 999px; padding: 4px 12px; font-family: inherit; font-size: 13px; cursor: pointer; }
+  .chip[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); border-color: transparent; font-weight: 600; }
+  input[type=search] { margin-left: auto; border: 1px solid var(--line); background: var(--bg); color: var(--ink); border-radius: 8px; padding: 6px 10px; font-family: inherit; font-size: 13px; min-width: 160px; }
+  .row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 16px; padding: 16px; border-bottom: 1px solid var(--line); }
+  .row:last-child { border-bottom: 0; }
+  .co { font-family: "Poppins", sans-serif; font-weight: 500; }
+  .role { color: var(--ink); }
+  .meta { color: var(--muted); font-size: 13px; margin-top: 2px; }
+  .note { color: var(--muted); font-size: 13px; margin-top: 6px; }
+  .actions { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+  select { border: 1px solid var(--line); background: var(--bg); color: var(--ink); border-radius: 8px; padding: 4px 8px; font-family: inherit; font-size: 13px; }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+  .open { font-size: 13px; color: var(--accent); text-decoration: none; }
+  .open:hover { text-decoration: underline; }
+  .empty { padding: 40px 16px; text-align: center; color: var(--muted); }
+  aside .card { padding: 18px; margin-bottom: 16px; }
+  aside h2 { font: 600 11.5px/1 "Poppins", sans-serif; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 0 0 12px; }
+  aside p { margin: 0 0 4px; }
+  .small { font-size: 13px; color: var(--muted); }
+  .item { margin-bottom: 10px; }
+  .item b { font-weight: 600; font-size: 14px; }
+  .flag { background: var(--warn-soft); color: var(--warn); border-radius: 8px; padding: 8px 10px; font-size: 13px; margin-bottom: 8px; }
+  .links a { margin-right: 14px; font-size: 13px; color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1 id="name"></h1>
+      <div class="sub" id="tagline"></div>
+    </div>
+    <button class="toggle" id="theme" type="button">Toggle theme</button>
+  </header>
+
+  <section class="stats" id="stats"></section>
+
+  <div class="grid">
+    <main class="card">
+      <div class="filters" id="filters"></div>
+      <div id="list"></div>
+    </main>
+    <aside>
+      <div class="card"><h2>Profile</h2><div id="profile"></div></div>
+      <div class="card"><h2>Experience</h2><div id="exp"></div></div>
+      <div class="card"><h2>To fix before applying</h2><div id="flags"></div></div>
+    </aside>
+  </div>
+</div>
+<script>
+// Source of truth for the dashboard. status: lead | verified | ready | applied | interview | closed
+window.PROFILE = {
+  name: "Korada Chandana Priya",
+  title: "B.Tech CSE, GITAM Visakhapatnam",
+  grad: "Aug 2027",
+  cgpa: "8.56",
+  links: [
+    { label: "GitHub", url: "https://github.com/chandanapriyaaa" },
+    { label: "LinkedIn", url: "https://www.linkedin.com/in/kchandanapriya/" }
+  ],
+  tracks: [
+    { name: "Data and BI", detail: "SQL, Python, ClickHouse, Superset, NiFi, PostgreSQL" },
+    { name: "ML and LLM", detail: "scikit-learn, TensorFlow, Hugging Face, RAG, Telugu NLP" },
+    { name: "Software", detail: "Python, Java, C, TypeScript, Docker" }
+  ],
+  experience: [
+    { org: "DRDO RCI", role: "Data Engineering Intern", when: "May 2026 to Jun 2026" },
+    { org: "VISWAM.AI with IIIT-H", role: "AI Developer Intern", when: "Jun 2025 to Nov 2025" },
+    { org: "MedTourEasy", role: "Data Analyst Trainee", when: "Jun 2025 to Jul 2025" }
+  ],
+  flags: [
+    "Check the email and current CTC rules before each form.",
+    "MedTourEasy dates set to Jun to Jul 2025 to match LinkedIn (old resume said May to Jun).",
+    "Resume versions ready in /resumes: Data, ML, SWE. Pick by role track."
+  ]
+};
+
+window.JOBS = [
+  { id: 1, company: "Amazon", role: "SDE Intern, India", type: "Internship", track: "Software", location: "Bengaluru, Hyderabad, Chennai", url: "https://www.amazon.jobs/", status: "lead", note: "Checked 10 Oct 2026: no SDE intern postings on amazon.jobs for India. Recheck weekly. Not signed in." },
+  { id: 2, company: "Microsoft", role: "Software Engineering Intern (Explore Microsoft India)", type: "Internship", track: "Software", location: "Bengaluru, Hyderabad", url: "https://careers.microsoft.com/", status: "lead", note: "Rolling. 8 week India edition. Verify live posting." },
+  { id: 3, company: "Salesforce", role: "Summer 2027 Software Engineer Intern", type: "Internship", track: "Software", location: "Hyderabad, Bengaluru", url: "https://careers.salesforce.com/", status: "lead", note: "Reported job ID JR337715 from a third party. Confirm on Salesforce portal." },
+  { id: 4, company: "Intuit", role: "Software Engineering Intern, Summer 2027", type: "Internship", track: "Software", location: "Bengaluru", url: "https://jobs.intuit.com/", status: "lead", note: "Reported job ID 22939 from a third party. Confirm on Intuit portal." },
+  { id: 5, company: "Google", role: "Software Engineering Intern, Summer 2027", type: "Internship", track: "Software", location: "Bengaluru, Hyderabad, Pune", url: "https://www.google.com/about/careers/applications/", status: "lead", note: "Reported deadline 28 Jun 2026 has passed. Check if reopened." },
+  { id: 6, company: "Adobe", role: "Software Engineering Intern, Summer 2027", type: "Internship", track: "Software", location: "Bengaluru, Noida", url: "https://careers.adobe.com/", status: "lead", note: "Only seen in an aggregator list. No details confirmed." },
+  { id: 7, company: "Labcorp", role: "Intern, Data Analytics Associate", type: "Internship", track: "Data and BI", location: "Bengaluru", url: "https://careers.labcorp.com/", status: "lead", note: "Aggregator lists batch 2026 and 2027. No deadline shown. Strong fit for SQL and BI." },
+  { id: 8, company: "Infosys", role: "InStep Internship", type: "Internship", track: "ML and LLM", location: "India", url: "https://www.infosys.com/careers/", status: "lead", note: "8 weeks from 18 Jan 2027 per one listing. For penultimate and final year students." },
+  { id: 9, company: "Airbus India", role: "Data Analysis Intern", type: "Internship", track: "Data and BI", location: "Bengaluru", url: "https://www.airbus.com/en/careers", status: "closed", note: "Last cycle closed 19 Nov 2025. Watch for the next cycle." },
+  { id: 10, company: "Walmart Global Tech", role: "Grad Intern (CA Industrial Trainee, Finance)", type: "Internship", track: "Other", location: "Bengaluru", url: "https://careers.walmart.com/", status: "closed", note: "Checked on LinkedIn 11 Oct 2026: this is a CA finance trainee role, not engineering. Not a fit. No SDE intern found yet." },
+  { id: 11, company: "Smytten (PulseAI Research)", role: "SDE Intern, Backend", type: "Internship", track: "Software", location: "Bengaluru, on-site", url: "https://www.linkedin.com/jobs/view/4471337817/", status: "applied", note: "Applied 11 Oct 2026 via LinkedIn Easy Apply with the SWE resume." },
+  { id: 12, company: "Weekday (YC W21)", role: "Software Engineer Intern", type: "Internship", track: "Software", location: "Bengaluru, remote", url: "https://www.linkedin.com/jobs/search/?keywords=software%20engineer%20intern&location=India&f_AL=true", status: "lead", note: "Listed at 3L to 6L INR a year, Easy Apply. Not yet read in full." }
+];
+</script>
+<script>
+  const STATUSES = [
+    ["lead", "Lead"], ["verified", "Verified"], ["ready", "Ready to apply"],
+    ["applied", "Applied"], ["interview", "Interview"], ["closed", "Closed"]
+  ];
+  const KEY = "chandana-job-status-v1";
+  const store = (() => { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } })();
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {} };
+  const statusOf = j => store[j.id] || j.status;
+  const state = { status: "all", track: "all", q: "" };
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const colour = s => `var(--s-${s})`;
+
+  const P = window.PROFILE;
+  $("name").textContent = P.name;
+  $("tagline").textContent = `${P.title}, graduating ${P.grad}, CGPA ${P.cgpa}`;
+  $("profile").innerHTML =
+    P.tracks.map(t => `<div class="item"><b>${esc(t.name)}</b><div class="small">${esc(t.detail)}</div></div>`).join("") +
+    
+    `<div class="links" style="margin-top:10px">${P.links.map(l => `<a href="${l.url}" target="_blank" rel="noopener">${esc(l.label)}</a>`).join("")}</div>`;
+  $("exp").innerHTML = P.experience.map(e => `<div class="item"><b>${esc(e.role)}</b><div class="small">${esc(e.org)}<br>${esc(e.when)}</div></div>`).join("");
+  $("flags").innerHTML = P.flags.map(f => `<div class="flag">${esc(f)}</div>`).join("");
+
+  function renderStats() {
+    const c = k => JOBS.filter(j => statusOf(j) === k).length;
+    const cells = [["Tracked", JOBS.length], ["Verified", c("verified") + c("ready")], ["Applied", c("applied")], ["Interviews", c("interview")]];
+    $("stats").innerHTML = cells.map(([l, n]) => `<div class="stat"><b>${n}</b><span>${l}</span></div>`).join("");
+  }
+
+  function renderFilters() {
+    const tracks = ["all", ...new Set(JOBS.map(j => j.track))];
+    const chip = (group, value, label) => `<button class="chip" type="button" data-g="${group}" data-v="${value}" aria-pressed="${state[group] === value}">${esc(label)}</button>`;
+    $("filters").innerHTML =
+      chip("status", "all", "All") + STATUSES.map(([k, l]) => chip("status", k, l)).join("") +
+      `<span style="width:8px"></span>` + tracks.map(t => chip("track", t, t === "all" ? "Any track" : t)).join("") +
+      `<input type="search" id="q" placeholder="Search" value="${esc(state.q)}">`;
+    $("filters").querySelectorAll(".chip").forEach(b => b.onclick = () => { state[b.dataset.g] = b.dataset.v; render(); });
+    const q = $("q");
+    q.oninput = () => { state.q = q.value; renderList(); };
+  }
+
+  function renderList() {
+    const q = state.q.trim().toLowerCase();
+    const rows = JOBS.filter(j =>
+      (state.status === "all" || statusOf(j) === state.status) &&
+      (state.track === "all" || j.track === state.track) &&
+      (!q || `${j.company} ${j.role} ${j.location}`.toLowerCase().includes(q)));
+    if (!rows.length) { $("list").innerHTML = `<div class="empty">Nothing matches these filters.</div>`; return; }
+    $("list").innerHTML = rows.map(j => {
+      const s = statusOf(j);
+      return `<div class="row">
+        <div>
+          <div><span class="co">${esc(j.company)}</span> <span class="role">${esc(j.role)}</span></div>
+          <div class="meta">${esc(j.type)} · ${esc(j.track)} · ${esc(j.location)}</div>
+          <div class="note">${esc(j.note)}</div>
+        </div>
+        <div class="actions">
+          <label><span class="dot" style="background:${colour(s)}"></span><select data-id="${j.id}">${STATUSES.map(([k, l]) => `<option value="${k}"${k === s ? " selected" : ""}>${l}</option>`).join("")}</select></label>
+          <a class="open" href="${j.url}" target="_blank" rel="noopener">Open careers page</a>
+        </div>
+      </div>`;
+    }).join("");
+    $("list").querySelectorAll("select").forEach(sel => sel.onchange = () => { store[sel.dataset.id] = sel.value; save(); render(); });
+  }
+
+  function render() { renderStats(); renderFilters(); renderList(); }
+  render();
+
+  $("theme").onclick = () => {
+    const el = document.documentElement;
+    const dark = el.dataset.theme ? el.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+    el.dataset.theme = dark ? "light" : "dark";
+  };
+</script>
+</body>
+</html>
