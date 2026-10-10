@@ -161,7 +161,8 @@ window.NOTES = [
 window.NEXT = [
   "Recheck Amazon, Microsoft, Intuit, Salesforce and Adobe careers pages weekly from November",
   "Confirm the machine learning intern alert is active on LinkedIn",
-  "Send outreach to recruiters and GITAM alumni at the companies applied to",
+  "Send the referral message to Sony contacts once they accept, then reach Smytten and Sprinto staff",
+  "Referral asks at other companies only once an eligible intern role is live with a job ID",
   "Full-time roles only above 7 to 8 LPA"
 ];
 
@@ -188,7 +189,11 @@ window.JOBS = [
 ];
 
 /* Add a row each time a message is sent. status: drafted | sent | replied | referred */
-window.OUTREACH = [];
+window.OUTREACH = [
+  { name: "Speech AI engineer", title: "Sony Research India", company: "Sony Research India", role: "Speech Recognition Intern", channel: "LinkedIn connection note", status: "sent", date: "2026-10-11" },
+  { name: "Research engineer, LLM and RAG", title: "Sony Research India", company: "Sony Research India", role: "LLM Research Intern", channel: "LinkedIn connection note", status: "sent", date: "2026-10-11" },
+  { name: "ML consultant", title: "Sony Research India", company: "Sony Research India", role: "Data Science Intern", channel: "LinkedIn connection note", status: "sent", date: "2026-10-11" }
+];
 
 window.TEMPLATES = [
   { name: "Connection note (under 200 characters)", body: "Hi {first}, I am Chandana, a final-year CSE student at GITAM. I applied for the {role} role at {company} and would love to connect and learn more about the team." },
@@ -282,7 +287,7 @@ const Overview = () => {
     ${Stat("Applied", a.length, `${jobs().length} roles tracked`)}
     ${Stat("Companies", companies, "with at least one application")}
     ${Stat("Interviews", jobs().filter(j => statusOf(j) === "interview").length, "none yet")}
-    ${Stat("Outreach sent", sent, "messages to recruiters and alumni")}
+    ${Stat("Outreach sent", sent, "connection notes sent")}
     ${NOTES.map(Callout).join("")}
     ${Pipeline()}
     ${Recent()}
