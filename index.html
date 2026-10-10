@@ -287,6 +287,7 @@
   .beats li > span { flex: none; width: 21px; height: 21px; border-radius: 50%; background: var(--surface); border: 1px solid var(--line); display: grid; place-items: center; font-size: 11px; color: var(--muted); z-index: 1; }
   .beats li > div { padding-top: 1px; }
   .qhint { padding: 9px 14px; border-top: 1px solid var(--line); color: var(--faint); font-size: 12px; }
+
   /* ===================================================================
      LIQUID GLASS LAYER
      Glass lives on the navigation layer (sidebar, filter bar, menus, controls).
@@ -298,11 +299,11 @@
     --glass: rgba(255,255,255,.50);
     --surface: rgba(255,255,255,.66);
     --soft: rgba(255,255,255,.44);
-    --hover: rgba(30,30,24,.055);
+    --hover: rgba(30,30,24,.04);
     --line: rgba(30,30,20,.10);
     --hi: rgba(255,255,255,.85);
-    --spec: rgba(255,255,255,.55);
-    --glow: rgba(255,255,255,.55);
+    --spec: rgba(255,255,255,.32);
+    --glow: rgba(255,255,255,.24);
     --thumb: rgba(255,255,255,.92);
     --accent-soft: rgba(47,79,70,.12);
     --info-soft: rgba(41,80,111,.10);
@@ -323,8 +324,8 @@
     :root:not([data-theme="light"]) {
       --solid: #1c1c20; --on-accent: #0f231c;
       --glass: rgba(34,34,40,.48); --surface: rgba(30,30,36,.58); --soft: rgba(255,255,255,.05);
-      --hover: rgba(255,255,255,.07); --line: rgba(255,255,255,.10); --hi: rgba(255,255,255,.13);
-      --spec: rgba(255,255,255,.07); --glow: rgba(255,255,255,.10); --thumb: rgba(255,255,255,.15);
+      --hover: rgba(255,255,255,.055); --line: rgba(255,255,255,.10); --hi: rgba(255,255,255,.13);
+      --spec: rgba(255,255,255,.035); --glow: rgba(255,255,255,.04); --thumb: rgba(255,255,255,.15);
       --accent-soft: rgba(143,184,168,.16); --info-soft: rgba(143,182,217,.14); --warn-soft: rgba(224,179,106,.14);
       --shadow: 0 1px 1px rgba(0,0,0,.30), 0 16px 36px -14px rgba(0,0,0,.65);
     }
@@ -332,8 +333,8 @@
   :root[data-theme="dark"] {
     --solid: #1c1c20; --on-accent: #0f231c;
     --glass: rgba(34,34,40,.48); --surface: rgba(30,30,36,.58); --soft: rgba(255,255,255,.05);
-    --hover: rgba(255,255,255,.07); --line: rgba(255,255,255,.10); --hi: rgba(255,255,255,.13);
-    --spec: rgba(255,255,255,.07); --glow: rgba(255,255,255,.10); --thumb: rgba(255,255,255,.15);
+    --hover: rgba(255,255,255,.055); --line: rgba(255,255,255,.10); --hi: rgba(255,255,255,.13);
+    --spec: rgba(255,255,255,.035); --glow: rgba(255,255,255,.04); --thumb: rgba(255,255,255,.15);
     --accent-soft: rgba(143,184,168,.16); --info-soft: rgba(143,182,217,.14); --warn-soft: rgba(224,179,106,.14);
     --shadow: 0 1px 1px rgba(0,0,0,.30), 0 16px 36px -14px rgba(0,0,0,.65);
   }
@@ -363,7 +364,7 @@
   /* panels: translucent, specular edge, pointer glow */
   .panel, .strip, .note, .story, .num {
     background-color: var(--surface);
-    background-image: radial-gradient(240px circle at var(--mx, -400px) var(--my, -400px), var(--glow), transparent 70%), linear-gradient(180deg, var(--spec), transparent 42%);
+    background-image: radial-gradient(200px circle at var(--mx, -400px) var(--my, -400px), var(--glow), transparent 70%), linear-gradient(180deg, var(--spec), transparent 42%);
     border-color: var(--line);
     box-shadow: var(--shadow), inset 0 1px 0 var(--hi);
   }
@@ -375,7 +376,7 @@
   @supports (corner-shape: squircle) { .panel, .side, .story, .strip, .note, .menu, .controls { corner-shape: squircle; } .panel { border-radius: 28px; } .side { border-radius: 34px; } .story { border-radius: 22px; } }
   .detail { background: var(--soft); }
   .rhead:hover, .rmain:hover { background: var(--hover); }
-  .rmain { background-image: radial-gradient(180px circle at var(--mx, -300px) var(--my, -300px), var(--glow), transparent 70%); background-color: transparent; }
+  .rmain { background-image: radial-gradient(130px circle at var(--mx, -300px) var(--my, -300px), var(--glow), transparent 70%); background-color: transparent; }
 
   /* glass controls */
   .controls { background: var(--glass); -webkit-backdrop-filter: blur(22px) saturate(170%); backdrop-filter: blur(22px) saturate(170%); box-shadow: inset 0 1px 0 var(--hi); }
@@ -440,6 +441,44 @@
     .side { margin: 8px; height: auto; top: 0; border-radius: 22px; }
     .app { grid-template-columns: 1fr; }
   }
+
+  /* ---------- title-style headers (Apple: section headers are not all caps) ---------- */
+  .panel > h2, .panel > summary, .wh h2 { text-transform: none; letter-spacing: 0; font: 600 13px/1.2 "Poppins", sans-serif; color: var(--ink); }
+  .h4, .cd .sec h4, .detail dt, .def dt, .orow.head, .matrix th, .cmp thead th, .cmp tbody th, .steps b, .li-h { text-transform: none; letter-spacing: .01em; }
+  .detail dt, .def dt, .cmp tbody th, .steps b { font-size: 12px; font-weight: 500; color: var(--muted); }
+  .orow.head, .matrix th { font-size: 12px; font-weight: 500; color: var(--muted); }
+  /* roomier rows and concentric radii */
+  .rmain { padding: 11px 14px; }
+  .orow { padding: 11px 14px; }
+  .citem { padding: 11px 14px; }
+  .q > summary { padding: 14px 16px; }
+
+  /* ---------- custom dropdown: trigger + glass popover ---------- */
+  .dd { position: relative; display: inline-flex; align-items: center; max-width: 100%; }
+  .dd > select { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; pointer-events: none; }
+  .dd-btn { display: inline-flex; align-items: center; gap: 8px; max-width: 340px; border: 1px solid var(--line); background: var(--soft); border-radius: 999px; padding: 5px 11px 5px 13px;
+    box-shadow: inset 0 1px 0 var(--hi); font-size: 12.5px; color: var(--ink); transition: background-color .2s, box-shadow .2s, transform .28s var(--sp-snap); }
+  .dd-btn:hover { background: var(--hover); }
+  .dd-btn:active { transform: scale(.97); transition-duration: .12s; }
+  .dd-btn[aria-expanded="true"] { background: var(--surface); box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 40%, transparent), inset 0 1px 0 var(--hi); }
+  .dd-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .dd-dot { width: 7px; height: 7px; border-radius: 50%; flex: none; }
+  .dd-caret { flex: none; width: 6px; height: 6px; border-right: 1.6px solid var(--faint); border-bottom: 1.6px solid var(--faint); transform: rotate(45deg) translate(-1px, -1px); transition: transform .3s var(--sp-snap); margin-left: 2px; }
+  .dd-btn[aria-expanded="true"] .dd-caret { transform: rotate(-135deg) translate(-1px, -1px); }
+  .dd-menu { position: fixed; z-index: 1000; min-width: 160px; max-width: min(360px, calc(100vw - 16px)); max-height: min(320px, calc(100vh - 24px)); overflow: auto; padding: 6px; border-radius: 16px;
+    background: var(--glass); -webkit-backdrop-filter: blur(28px) saturate(180%); backdrop-filter: blur(28px) saturate(180%); border: 1px solid var(--line);
+    box-shadow: var(--shadow), inset 0 1px 0 var(--hi); outline: none; animation: ddin .24s var(--sp-snap) both; overscroll-behavior: contain; }
+  .dd-menu.out { animation: ddout .12s ease-in both; pointer-events: none; }
+  .dd-opt { display: flex; align-items: center; gap: 9px; padding: 8px 10px; border-radius: 10px; cursor: pointer; font-size: 13px; transition: background-color .12s; }
+  .dd-opt:hover, .dd-opt.active { background: var(--hover); }
+  .dd-opt > span { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .dd-opt .dd-dot { margin-right: 0; }
+  .dd-check { flex: none; width: 10px; height: 6px; border-left: 2px solid var(--accent); border-bottom: 2px solid var(--accent); transform: rotate(-45deg) translate(1px, -1px); opacity: 0; }
+  .dd-opt[aria-selected="true"] .dd-check { opacity: 1; }
+  .dd-opt[aria-selected="true"] { font-weight: 600; }
+  @keyframes ddin { from { opacity: 0; transform: scale(.9) translateY(-4px); } to { opacity: 1; transform: none; } }
+  @keyframes ddout { to { opacity: 0; transform: scale(.97); } }
+  @media (prefers-reduced-transparency: reduce) { .dd-menu { background: var(--solid); -webkit-backdrop-filter: none; backdrop-filter: none; } }
 </style>
 </head>
 <body>
@@ -755,7 +794,7 @@ const keepScroll = fn => { const y = window.scrollY; fn(); window.scrollTo(0, y)
 
 /* ============ COMPONENTS ============ */
 const Dot = s => `<span class="dot" style="background:${col(s)}"></span>`;
-const StatusSelect = j => `<label style="display:flex;align-items:center">${Dot(statusOf(j))}<select data-job="${j.id}" aria-label="Status for ${esc(j.role)}">${STATUSES.map(([k, l]) => `<option value="${k}"${k === statusOf(j) ? " selected" : ""}>${l}</option>`).join("")}</select></label>`;
+const StatusSelect = j => `<label style="display:flex;align-items:center"><select data-job="${j.id}" aria-label="Status for ${esc(j.role)}">${STATUSES.map(([k, l]) => `<option value="${k}"${k === statusOf(j) ? " selected" : ""}>${l}</option>`).join("")}</select></label>`;
 
 const Detail = j => {
   const related = OUTREACH.filter(o => o.company === j.company).length;
@@ -1122,16 +1161,16 @@ float fbm(vec2 p){float v=0.;float a=.5;for(int i=0;i<4;i++){v+=a*noise(p);p=p*2
 void main(){
   vec2 uv=gl_FragCoord.xy/uRes;
   vec2 p=(uv-.5)*vec2(uRes.x/uRes.y,1.);
-  float t=uTime*.045;
+  float t=uTime*.03;
   vec2 q=vec2(fbm(p*1.3+t),fbm(p*1.3+vec2(5.2,1.3)-t));
   vec2 r=vec2(fbm(p*1.6+2.*q+vec2(1.7,9.2)+t*1.3),fbm(p*1.6+2.*q+vec2(8.3,2.8)-t));
   float f=fbm(p*1.15+2.4*r);
   vec2 m=(uMouse-.5)*vec2(uRes.x/uRes.y,1.);
   vec3 col=uBase;
-  col=mix(col,uC0,smoothstep(.25,.95,f));
-  col=mix(col,uC1,smoothstep(.35,1.05,length(q))*.85);
-  col=mix(col,uC2,smoothstep(.4,1.,r.x)*.8);
-  col=mix(col,uC3,.7*smoothstep(.75,0.,length(p-m*.7-vec2(.25,-.15))));
+  col=mix(col,uC0,smoothstep(.25,.95,f)*.85);
+  col=mix(col,uC1,smoothstep(.35,1.05,length(q))*.7);
+  col=mix(col,uC2,smoothstep(.4,1.,r.x)*.65);
+  col=mix(col,uC3,.5*smoothstep(.75,0.,length(p-m*.7-vec2(.25,-.15))));
   col+=(hash(gl_FragCoord.xy+uTime)-.5)*.012;
   gl_FragColor=vec4(col,1.);
 }`;
@@ -1147,8 +1186,8 @@ void main(){
   const U = n => gl.getUniformLocation(prog, n);
   const u = { res: U("uRes"), time: U("uTime"), mouse: U("uMouse"), base: U("uBase"), c0: U("uC0"), c1: U("uC1"), c2: U("uC2"), c3: U("uC3") };
   const PAL = {
-    light: { base: "#f1eee7", c0: "#b4dccb", c1: "#c8bff0", c2: "#f8c8ad", c3: "#aed4f5" },
-    dark: { base: "#0d0e11", c0: "#115049", c1: "#2e2670", c2: "#51205a", c3: "#14407a" }
+    light: { base: "#f1eee8", c0: "#c2dfd2", c1: "#d2ccef", c2: "#f6d2bb", c3: "#bddcf3" },
+    dark: { base: "#0d0e11", c0: "#0f4640", c1: "#29235f", c2: "#46204f", c3: "#123a6d" }
   };
   const rgb = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16) / 255);
   const isDark = () => root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
@@ -1257,6 +1296,82 @@ document.addEventListener("pointerout", e => {
   if (t && !t.contains(e.relatedTarget)) { t.style.removeProperty("--mx"); t.style.removeProperty("--my"); }
 });
 addEventListener("resize", () => { placeNav(); placeSegs(); });
+
+/* ============ DROPDOWNS: glass popover that grows out of its trigger ============ */
+let ddOpen = null;
+const ddDot = (sel, v) => sel.hasAttribute("data-job") ? `<span class="dd-dot" style="background:var(--s-${esc(v)})"></span>` : "";
+function enhanceSelects() {
+  document.querySelectorAll("select:not([data-enh])").forEach(sel => {
+    sel.dataset.enh = "1"; sel.tabIndex = -1;
+    const wrap = document.createElement("span"); wrap.className = "dd";
+    sel.parentNode.insertBefore(wrap, sel); wrap.appendChild(sel);
+    const btn = document.createElement("button"); btn.type = "button"; btn.className = "dd-btn";
+    btn.setAttribute("aria-haspopup", "listbox"); btn.setAttribute("aria-expanded", "false");
+    if (sel.getAttribute("aria-label")) btn.setAttribute("aria-label", sel.getAttribute("aria-label"));
+    wrap.insertBefore(btn, sel);
+    const sync = () => { const o = sel.options[sel.selectedIndex]; btn.innerHTML = `${ddDot(sel, sel.value)}<span class="dd-label">${esc(o ? o.textContent : "")}</span><span class="dd-caret"></span>`; };
+    sync(); sel._sync = sync;
+    btn.addEventListener("click", () => ddOpen && ddOpen.btn === btn ? closeMenu() : openMenu(sel, btn));
+    btn.addEventListener("keydown", e => { if (["ArrowDown", "ArrowUp", "Enter", " "].includes(e.key)) { e.preventDefault(); openMenu(sel, btn); } });
+  });
+}
+function openMenu(sel, btn) {
+  closeMenu(true);
+  const m = document.createElement("div"); m.className = "dd-menu"; m.setAttribute("role", "listbox"); m.tabIndex = -1;
+  m.innerHTML = [...sel.options].map((o, i) => `<div class="dd-opt" role="option" data-i="${i}" aria-selected="${o.selected}">${ddDot(sel, o.value)}<span>${esc(o.textContent)}</span><i class="dd-check"></i></div>`).join("");
+  document.body.appendChild(m);
+  const r = btn.getBoundingClientRect();
+  m.style.minWidth = Math.max(r.width, 160) + "px";
+  const mw = m.offsetWidth, mh = m.offsetHeight;
+  let top = r.bottom + 8, oy = "top";
+  if (top + mh > innerHeight - 8 && r.top - mh - 8 > 8) { top = r.top - mh - 8; oy = "bottom"; }
+  const left = Math.max(8, Math.min(r.left, innerWidth - mw - 8));
+  m.style.top = Math.max(8, top) + "px"; m.style.left = left + "px";
+  m.style.transformOrigin = `${Math.max(12, r.left + r.width / 2 - left)}px ${oy}`;
+  btn.setAttribute("aria-expanded", "true");
+  ddOpen = { m, btn, sel, idx: Math.max(0, sel.selectedIndex) };
+  setActive(ddOpen.idx, true);
+  m.addEventListener("pointermove", e => { const o = e.target.closest(".dd-opt"); if (o) setActive(+o.dataset.i); });
+  m.addEventListener("click", e => { const o = e.target.closest(".dd-opt"); if (o) choose(+o.dataset.i); });
+  m.focus({ preventScroll: true });
+}
+function setActive(i, scroll) {
+  if (!ddOpen) return;
+  ddOpen.idx = i;
+  ddOpen.m.querySelectorAll(".dd-opt").forEach((o, k) => { o.classList.toggle("active", k === i); if (k === i && scroll) o.scrollIntoView({ block: "nearest" }); });
+}
+function choose(i) {
+  if (!ddOpen) return;
+  const { sel, btn } = ddOpen;
+  const changed = sel.selectedIndex !== i;
+  sel.selectedIndex = i;
+  closeMenu();
+  if (changed) { sel._sync && sel._sync(); sel.dispatchEvent(new Event("change", { bubbles: true })); }
+  if (btn.isConnected) btn.focus({ preventScroll: true });
+}
+function closeMenu(instant) {
+  if (!ddOpen) return;
+  const { m, btn } = ddOpen; ddOpen = null;
+  btn.setAttribute("aria-expanded", "false");
+  if (instant || motionOff()) m.remove(); else { m.classList.add("out"); setTimeout(() => m.remove(), 130); }
+}
+document.addEventListener("pointerdown", e => { if (ddOpen && !e.target.closest(".dd-menu") && !e.target.closest(".dd-btn")) closeMenu(); }, true);
+document.addEventListener("keydown", e => {
+  if (!ddOpen) return;
+  const n = ddOpen.sel.options.length;
+  if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); const b = ddOpen.btn; closeMenu(); b.focus({ preventScroll: true }); }
+  else if (e.key === "ArrowDown") { e.preventDefault(); setActive((ddOpen.idx + 1) % n, true); }
+  else if (e.key === "ArrowUp") { e.preventDefault(); setActive((ddOpen.idx - 1 + n) % n, true); }
+  else if (e.key === "Home") { e.preventDefault(); setActive(0, true); }
+  else if (e.key === "End") { e.preventDefault(); setActive(n - 1, true); }
+  else if (e.key === "Enter" || e.key === " ") { e.preventDefault(); choose(ddOpen.idx); }
+  else if (e.key === "Tab") closeMenu();
+  else if (e.key.length === 1) { const k = e.key.toLowerCase(), opts = [...ddOpen.sel.options]; const at = opts.findIndex((o, i) => i > ddOpen.idx && o.textContent.trim().toLowerCase().startsWith(k)); const j = at >= 0 ? at : opts.findIndex(o => o.textContent.trim().toLowerCase().startsWith(k)); if (j >= 0) setActive(j, true); }
+}, true);
+addEventListener("scroll", e => { if (ddOpen && !e.target.closest?.(".dd-menu")) closeMenu(); }, true);
+addEventListener("resize", () => closeMenu(true));
+new MutationObserver(() => { if (document.querySelector("select:not([data-enh])")) enhanceSelects(); }).observe(document.body, { childList: true, subtree: true });
+enhanceSelects();
 
 $("#name").textContent = PROFILE.name;
 $("#tagline").textContent = `${PROFILE.title}, ${PROFILE.grad}`;
