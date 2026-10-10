@@ -91,13 +91,20 @@
   .pill.ok { color: var(--s-applied); border-color: color-mix(in srgb, var(--s-applied) 35%, transparent); }
   .tag { font-size: 11.5px; color: var(--accent); background: var(--accent-soft); border-radius: 6px; padding: 0 7px; }
 
-  .controls { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding: 10px 12px; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--surface); border-radius: 12px 12px 0 0; z-index: 2; }
-  .chip { border: 1px solid transparent; background: none; color: var(--muted); border-radius: 999px; padding: 3px 10px; font-size: 12.5px; }
-  .chip:hover { background: var(--hover); }
-  .chip[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
-  .chip .n { opacity: .6; margin-left: 4px; }
-  .sep { width: 1px; height: 18px; background: var(--line); margin: 0 4px; }
-  .push { margin-left: auto; display: flex; gap: 6px; align-items: center; color: var(--muted); font-size: 12.5px; }
+  .controls { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; justify-content: space-between; padding: 10px 12px; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--surface); border-radius: 12px 12px 0 0; z-index: 2; }
+  .seg { display: inline-flex; flex-wrap: wrap; gap: 2px; background: var(--soft); border: 1px solid var(--line); border-radius: 10px; padding: 3px; }
+  .seg button { display: inline-flex; align-items: center; border: 0; background: none; color: var(--muted); border-radius: 7px; padding: 5px 10px; font-size: 12.5px; font-weight: 500; }
+  .seg button:hover { background: var(--hover); color: var(--ink); }
+  .seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 0 0 1px var(--line), 0 1px 2px rgba(0,0,0,.06); }
+  .seg button.zero { opacity: .5; }
+  .seg .n { margin-left: 6px; color: var(--faint); font-weight: 400; font-size: 12px; }
+  .ctl { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; }
+  .ctl label { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 12.5px; }
+  .ctl select { padding: 5px 8px; }
+  .subbar { display: flex; align-items: center; gap: 12px; padding: 8px 14px; color: var(--muted); font-size: 12.5px; border-bottom: 1px solid var(--line); background: var(--soft); }
+  .linkbtn { border: 0; background: none; color: var(--accent); font-weight: 500; padding: 0; }
+  .linkbtn:hover { text-decoration: underline; }
+  .linkbtn[hidden] { display: none; }
 
   /* rows */
   .row { border-top: 1px solid var(--line); }
@@ -170,7 +177,30 @@
   .matrix td { padding: 8px 12px; border-top: 1px solid var(--line); }
   .matrix td.c { text-align: center; }
   .matrix th.c { text-align: center; }
-</style>
+  /* widgets */
+  .wgrid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 14px; align-items: start; }
+  .w { grid-column: span var(--span, 12); min-width: 0; }
+  @media (max-width: 1100px) { .w { grid-column: span 12; } }
+  .wh { display: flex; justify-content: space-between; align-items: center; padding-right: 8px; }
+  .wh h2 { font: 600 11px/1 "Poppins", sans-serif; text-transform: uppercase; letter-spacing: .09em; color: var(--muted); margin: 0; padding: 13px 14px; }
+  .wc { border: 0; background: none; color: var(--faint); width: 26px; height: 26px; border-radius: 7px; font-size: 16px; line-height: 1; }
+  .wc:hover { background: var(--hover); color: var(--ink); }
+  .wb { padding: 0 0 4px; }
+  .wpad { padding: 2px 14px 14px; }
+  .radar { display: block; width: 100%; max-width: 340px; margin: 0 auto; }
+  .rl { font: 500 11.5px "Inter", sans-serif; fill: var(--ink); }
+  .rv { font: 400 11px "Inter", sans-serif; fill: var(--muted); }
+  .bars { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; align-items: end; }
+  .bar { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .bpair { display: flex; align-items: flex-end; gap: 3px; height: 92px; width: 100%; justify-content: center; border-bottom: 1px solid var(--line); }
+  .bpair i { display: block; width: 14px; min-height: 2px; border-radius: 4px 4px 0 0; }
+  .hb { margin-bottom: 11px; }
+  .hb:last-of-type { margin-bottom: 8px; }
+  .row2 { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+  .track { position: relative; height: 8px; background: var(--soft); border-radius: 999px; overflow: hidden; }
+  .track i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 999px; }
+  .cust { position: relative; }
+  .menu { position: absolute; right: 0; top: calc(100% + 6px); z-index: 20; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,.12); padding: 10px 14px; min-width: 200px; }</style>
 </head>
 <body>
 <div class="app">
@@ -181,7 +211,7 @@
     <div class="foot"><span id="upd"></span><button class="btn" id="theme" type="button">Toggle theme</button></div>
   </aside>
   <main class="main">
-    <div class="ph"><h2 id="ptitle"></h2><span class="sub" id="psub"></span></div>
+    <div class="ph"><h2 id="ptitle"></h2><span class="sub" id="psub"></span><span class="grow" style="flex:1"></span><div id="pactions"></div></div>
     <div id="view"></div>
   </main>
 </div>
@@ -270,6 +300,16 @@ window.TEMPLATES = [
   { name: "Recruiter note", body: "Hi {first}, I am Chandana, a final-year CSE student at GITAM. I have applied for the {role} role at {company} and wanted to introduce myself. I have hands-on experience in data engineering and LLM applications and would be glad to share more. Thank you." },
   { name: "Follow up after a week", body: "Hi {first}, a quick follow up on my earlier note about the {role} role at {company}. I remain very interested and can share anything that helps. Thank you for your time." }
 ];
+
+/* weekly goals used by the spider plot; change the targets to taste */
+window.GOALS = [
+  { key: "applied", label: "Applications", target: 15 },
+  { key: "outreach", label: "Messages", target: 25 },
+  { key: "accepted", label: "Accepted", target: 10 },
+  { key: "companies", label: "Companies", target: 10 },
+  { key: "alerts", label: "Alerts on", target: 3 },
+  { key: "resumes", label: "Resumes used", target: 3 }
+];
 </script>
 
 <script>
@@ -332,51 +372,124 @@ const JobRow = (j, opts = {}) => {
 };
 
 /* ============ VIEWS ============ */
-function Overview() {
+/* ============ OVERVIEW WIDGETS ============ */
+store.w = store.w || { hidden: {}, collapsed: {} };
+store.w.hidden = store.w.hidden || {}; store.w.collapsed = store.w.collapsed || {};
+const isoDay = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+const appliedJobs = () => jobs().filter(isApplied);
+const acceptedCount = () => OUTREACH.filter((o, i) => ["accepted", "replied", "referred"].includes(ostatus(o, i))).length;
+const watchJobs = () => jobs().filter(j => ["lead", "verified", "ready"].includes(statusOf(j)));
+const usedResumes = () => new Set(appliedJobs().map(j => j.resume).filter(Boolean)).size;
+
+function Radar(items) {
+  const S = 320, c = S / 2, R = 96, n = items.length;
+  const ang = i => -Math.PI / 2 + (i * 2 * Math.PI) / n;
+  const pt = (i, r) => [c + r * Math.cos(ang(i)), c + r * Math.sin(ang(i))];
+  const poly = f => items.map((_, i) => pt(i, R * f).map(v => v.toFixed(1)).join(",")).join(" ");
+  const rings = [0.25, 0.5, 0.75, 1].map(f => `<polygon points="${poly(f)}" fill="none" stroke="var(--line)" stroke-width="1"/>`).join("");
+  const spokes = items.map((_, i) => { const [x, y] = pt(i, R); return `<line x1="${c}" y1="${c}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="var(--line)"/>`; }).join("");
+  const shape = items.map((it, i) => pt(i, R * Math.max(it.value, 0.03)).map(v => v.toFixed(1)).join(",")).join(" ");
+  const dots = items.map((it, i) => { const [x, y] = pt(i, R * Math.max(it.value, 0.03)); return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3.2" fill="var(--accent)"/>`; }).join("");
+  const labels = items.map((it, i) => {
+    const [x, y] = pt(i, R + 20); const cs = Math.cos(ang(i));
+    const anchor = Math.abs(cs) < 0.2 ? "middle" : cs > 0 ? "start" : "end";
+    return `<text x="${x.toFixed(1)}" y="${(y - 2).toFixed(1)}" text-anchor="${anchor}" class="rl">${esc(it.label)}</text><text x="${x.toFixed(1)}" y="${(y + 11).toFixed(1)}" text-anchor="${anchor}" class="rv">${esc(it.text)}</text>`;
+  }).join("");
+  return `<svg viewBox="0 0 ${S} ${S}" class="radar" role="img" aria-label="Progress against weekly goals: ${esc(items.map(i => i.label + " " + i.text).join(", "))}">${rings}${spokes}<polygon points="${shape}" fill="var(--accent)" fill-opacity=".18" stroke="var(--accent)" stroke-width="1.6" stroke-linejoin="round"/>${dots}${labels}</svg>`;
+}
+
+const wKpis = () => {
+  const a = appliedJobs();
+  const S = (n, l, act) => `<button class="stat" type="button" data-go="${act}"><b>${n}</b><span>${l}</span></button>`;
+  return `<div class="strip">${S(a.length, "applied", "applied")}${S(new Set(a.map(j => j.company)).size, "companies", "companies")}${S(OUTREACH.length, "messages", "outreach")}${S(acceptedCount(), "accepted", "outreach")}${S(watchJobs().length, "leads", "lead")}${S(jobs().filter(j => statusOf(j) === "interview").length, "interviews", "interview")}</div>`;
+};
+const wApplied = () => { const a = appliedJobs().sort((x, y) => (y.date || "").localeCompare(x.date || "")); return a.length ? a.map(j => JobRow(j, { compact: true, select: false })).join("") : `<div class="empty">Nothing yet.</div>`; };
+const wGoals = () => {
+  const val = { applied: appliedJobs().length, outreach: OUTREACH.length, accepted: acceptedCount(), companies: new Set(appliedJobs().map(j => j.company)).size, alerts: ALERTS.filter(a => a.on).length, resumes: usedResumes() };
+  const items = GOALS.map(g => ({ label: g.label, value: Math.min((val[g.key] || 0) / g.target, 1), text: `${val[g.key] || 0} of ${g.target}` }));
+  return `<div class="wpad">${Radar(items)}<div class="small faint" style="text-align:center">Progress against weekly goals. Edit the targets in GOALS.</div></div>`;
+};
+const wActivity = () => {
+  const days = [...Array(7)].map((_, i) => { const d = new Date(); d.setDate(d.getDate() - (6 - i)); return d; });
+  const data = days.map(d => { const k = isoDay(d); return { d, a: appliedJobs().filter(j => j.date === k).length, m: OUTREACH.filter(o => o.date === k).length }; });
+  const max = Math.max(3, ...data.map(x => Math.max(x.a, x.m)));
+  return `<div class="wpad"><div class="bars">${data.map(x => `<div class="bar"><div class="bpair"><i style="height:${(x.a / max) * 100}%;background:var(--accent)" title="${x.a} applied"></i><i style="height:${(x.m / max) * 100}%;background:var(--info)" title="${x.m} messages"></i></div><span class="small faint">${x.d.toLocaleDateString("en-GB", { weekday: "short" })}</span><span class="small">${x.a + x.m || ""}</span></div>`).join("")}</div>
+    <div class="small muted" style="display:flex;gap:14px;margin-top:8px"><span><span class="dot" style="background:var(--accent)"></span>Applications</span><span><span class="dot" style="background:var(--info)"></span>Messages</span></div></div>`;
+};
+const wTracks = () => {
+  const tracks = [...new Set(jobs().map(j => j.track))];
+  const rows = tracks.map(t => ({ t, tracked: jobs().filter(j => j.track === t && statusOf(j) !== "closed").length, applied: jobs().filter(j => j.track === t && isApplied(j)).length })).filter(r => r.tracked);
+  const max = Math.max(1, ...rows.map(r => r.tracked));
+  return `<div class="wpad">${rows.map(r => `<div class="hb"><div class="row2"><span>${esc(r.t)}</span><span class="small muted">${r.applied} applied of ${r.tracked}</span></div><div class="track"><i style="width:${(r.tracked / max) * 100}%;background:var(--line)"></i><i class="over" style="width:${(r.applied / max) * 100}%;background:var(--accent)"></i></div></div>`).join("")}</div>`;
+};
+const wResumeUse = () => {
+  const rows = RESUMES.map(r => ({ n: r.name, k: appliedJobs().filter(j => j.resume === r.name).length }));
+  const max = Math.max(1, ...rows.map(r => r.k));
+  return `<div class="wpad">${rows.map(r => `<div class="hb"><div class="row2"><span>${esc(r.n)}</span><span class="small muted">${r.k} used</span></div><div class="track"><i style="width:${(r.k / max) * 100}%;background:var(--accent)"></i></div></div>`).join("")}<button class="linkbtn" type="button" data-go="resumes">See where each was used</button></div>`;
+};
+const wPipeline = () => {
   const total = jobs().length || 1;
   const counts = STATUSES.map(([k, l]) => [k, l, jobs().filter(j => statusOf(j) === k).length]);
-  const a = jobs().filter(isApplied).sort((x, y) => (y.date || "").localeCompare(x.date || ""));
-  const watch = jobs().filter(j => ["lead", "verified", "ready"].includes(statusOf(j)));
-  const cos = new Set(a.map(j => j.company)).size;
-  const acc = OUTREACH.filter((o, i) => ["accepted", "replied", "referred"].includes(ostatus(o, i))).length;
-  const S = (n, l, act) => `<button class="stat" type="button" data-go="${act}"><b>${n}</b><span>${l}</span></button>`;
-  return `
-  ${state.noteHidden ? "" : NOTES.map(n => `<div class="note"><b>${esc(n.title)}</b><span>${esc(n.body)}</span><button type="button" data-hidenote aria-label="Dismiss">&times;</button></div>`).join("")}
-  <section class="strip">${S(a.length, "applied", "applied")}${S(cos, "companies", "companies")}${S(OUTREACH.length, "messages", "outreach")}${S(acc, "accepted", "outreach")}${S(watch.length, "leads", "lead")}</section>
-  <div class="cols">
-    <div class="stack">
-      <section class="panel"><h2>Applied</h2><div class="body flush">${a.length ? a.map(j => JobRow(j, { compact: true, select: false })).join("") : `<div class="empty">Nothing yet.</div>`}</div></section>
-      <details class="panel"><summary>Leads to watch <span class="faint">${watch.length}</span></summary><div class="body flush">${watch.map(j => JobRow(j, { compact: true })).join("") || `<div class="empty">No open leads.</div>`}</div></details>
-    </div>
-    <div class="stack">
-      <section class="panel"><h2>Pipeline</h2><div class="body">
-        <div class="pipe">${counts.map(([k, , n]) => n ? `<span style="width:${(n / total) * 100}%;background:${col(k)}"></span>` : "").join("")}</div>
-        <div class="legend">${counts.map(([k, l, n]) => `<button type="button" data-go="${k}"><span>${Dot(k)}${l}</span><b>${n}</b></button>`).join("")}</div>
-      </div></section>
-      <section class="panel"><h2>Next</h2><div class="body">${NEXT.map((t, i) => `<label class="check ${store.n[i] ? "done" : ""}"><input type="checkbox" data-next="${i}" ${store.n[i] ? "checked" : ""}><span>${esc(t)}</span></label>`).join("")}</div></section>
-      <details class="panel"><summary>Alerts</summary><div class="body">${ALERTS.map(x => `<div class="li"><span>${esc(x.q)}</span><span class="pill ${x.on ? "ok" : ""}">${x.on ? "On" : "Check"}</span></div>`).join("")}</div></details>
-    </div>
-  </div>`;
+  return `<div class="wpad"><div class="pipe">${counts.map(([k, , n]) => n ? `<span style="width:${(n / total) * 100}%;background:${col(k)}"></span>` : "").join("")}</div><div class="legend">${counts.map(([k, l, n]) => `<button type="button" data-go="${k}"><span>${Dot(k)}${l}</span><b>${n}</b></button>`).join("")}</div></div>`;
+};
+const wNext = () => `<div class="wpad">${NEXT.map((t, i) => `<label class="check ${store.n[i] ? "done" : ""}"><input type="checkbox" data-next="${i}" ${store.n[i] ? "checked" : ""}><span>${esc(t)}</span></label>`).join("")}</div>`;
+const wLeads = () => watchJobs().map(j => JobRow(j, { compact: true })).join("") || `<div class="empty">No open leads.</div>`;
+const wAlerts = () => `<div class="wpad">${ALERTS.map(x => `<div class="li"><span>${esc(x.q)}</span><span class="pill ${x.on ? "ok" : ""}">${x.on ? "On" : "Check"}</span></div>`).join("")}</div>`;
+
+const WDEF = [
+  { id: "kpis", title: "Summary", span: 12, bare: true, render: wKpis },
+  { id: "applied", title: "Applied", span: 7, render: wApplied, flush: true },
+  { id: "goals", title: "Weekly goals", span: 5, render: wGoals },
+  { id: "activity", title: "Last 7 days", span: 6, render: wActivity },
+  { id: "tracks", title: "By track", span: 6, render: wTracks },
+  { id: "resumes", title: "Resume use", span: 4, render: wResumeUse },
+  { id: "pipeline", title: "Pipeline", span: 4, render: wPipeline },
+  { id: "next", title: "Next", span: 4, render: wNext },
+  { id: "leads", title: "Leads to watch", span: 8, collapsed: true, render: wLeads, flush: true },
+  { id: "alerts", title: "Alerts", span: 4, collapsed: true, render: wAlerts }
+];
+const isHidden = id => !!store.w.hidden[id];
+const isCollapsed = d => store.w.collapsed[d.id] != null ? store.w.collapsed[d.id] : !!d.collapsed;
+const Widget = d => {
+  if (d.bare) return `<div class="w" style="--span:${d.span}">${d.render()}</div>`;
+  const c = isCollapsed(d);
+  return `<section class="panel w" style="--span:${d.span}"><div class="wh"><h2>${esc(d.title)}</h2><button class="wc" type="button" data-collapse="${d.id}" aria-expanded="${!c}" aria-label="${c ? "Expand" : "Collapse"} ${esc(d.title)}">${c ? "+" : "&minus;"}</button></div>${c ? "" : `<div class="wb ${d.flush ? "flush" : ""}">${d.render()}</div>`}</section>`;
+};
+function Overview() {
+  const shown = WDEF.filter(d => !isHidden(d.id));
+  return `${state.noteHidden ? "" : NOTES.map(n => `<div class="note"><b>${esc(n.title)}</b><span>${esc(n.body)}</span><button type="button" data-hidenote aria-label="Dismiss">&times;</button></div>`).join("")}
+    <div class="wgrid">${shown.map(Widget).join("") || `<div class="empty">All widgets are hidden. Use Customize to bring them back.</div>`}</div>`;
+}
+function Actions() {
+  if (state.tab !== "overview") return "";
+  return `<div class="cust"><button class="btn" type="button" data-cust aria-expanded="${!!state.cust}">Customize</button>${state.cust ? `<div class="menu" role="group" aria-label="Show widgets">${WDEF.filter(d => !d.bare).map(d => `<label class="check"><input type="checkbox" data-wshow="${d.id}" ${isHidden(d.id) ? "" : "checked"}><span>${esc(d.title)}</span></label>`).join("")}<button class="linkbtn" type="button" data-wreset>Reset layout</button></div>` : ""}</div>`;
 }
 
 function Jobs() {
-  const tracks = ["all", ...new Set(jobs().map(j => j.track))];
+  const tracks = [...new Set(jobs().map(j => j.track))];
   const cnt = k => k === "all" ? jobs().length : jobs().filter(j => statusOf(j) === k).length;
-  const chip = (g, v, l, n) => `<button class="chip" type="button" data-g="${g}" data-v="${v}" aria-pressed="${state[g] === v}">${esc(l)}${n != null ? `<span class="n">${n}</span>` : ""}</button>`;
+  const seg = (v, l) => `<button type="button" data-g="status" data-v="${v}" aria-pressed="${state.status === v}" class="${cnt(v) ? "" : "zero"}">${v === "all" ? "" : Dot(v)}${esc(l)}<span class="n">${cnt(v)}</span></button>`;
   return `<section class="panel">
     <div class="controls">
-      ${chip("status", "all", "All", cnt("all"))}${STATUSES.map(([k, l]) => chip("status", k, l, cnt(k))).join("")}
-      <span class="sep"></span>${tracks.map(t => chip("track", t, t === "all" ? "Any track" : t)).join("")}
-      <span class="push">Sort <select id="sort" aria-label="Sort"><option value="status">Status</option><option value="recent">Recent</option><option value="company">Company</option></select>
-      <button class="btn" type="button" data-expand>Expand all</button></span>
-    </div><div id="jobsList"></div></section>`;
+      <div class="seg" role="group" aria-label="Filter by status">${seg("all", "All")}${STATUSES.map(([k, l]) => seg(k, l)).join("")}</div>
+      <div class="ctl">
+        <label>Track <select data-filter="track" aria-label="Track"><option value="all">All tracks</option>${tracks.map(t => `<option value="${esc(t)}"${state.track === t ? " selected" : ""}>${esc(t)}</option>`).join("")}</select></label>
+        <label>Sort <select id="sort" aria-label="Sort"><option value="status">Status</option><option value="recent">Most recent</option><option value="company">Company A to Z</option></select></label>
+        <button class="btn" type="button" data-expand>Expand all</button>
+      </div>
+    </div>
+    <div class="subbar"><span id="resultCount"></span><button class="linkbtn" type="button" data-clear hidden>Clear filters</button></div>
+    <div id="jobsList"></div></section>`;
 }
 const filteredJobs = () => jobs().filter(j => (state.status === "all" || statusOf(j) === state.status) && (state.track === "all" || j.track === state.track) && matches(j, state.q));
 function JobsList() {
   const by = { status: (a, b) => ORDER[statusOf(a)] - ORDER[statusOf(b)] || a.company.localeCompare(b.company), recent: (a, b) => (b.date || "").localeCompare(a.date || "") || a.company.localeCompare(b.company), company: (a, b) => a.company.localeCompare(b.company) };
   const list = filteredJobs().sort(by[state.sort]);
-  $("#jobsList").innerHTML = list.length ? list.map(j => JobRow(j)).join("") : `<div class="empty">Nothing matches these filters.</div>`;
+  $("#jobsList").innerHTML = list.length ? list.map(j => JobRow(j)).join("") : `<div class="empty">Nothing matches these filters.<br><button class="linkbtn" type="button" data-clear>Clear filters</button></div>`;
   const s = $("#sort"); if (s) s.value = state.sort;
+  const active = state.status !== "all" || state.track !== "all" || !!state.q;
+  const rc = $("#resultCount"); if (rc) rc.textContent = `Showing ${list.length} of ${jobs().length}` + (state.q ? ` for "${state.q}"` : "");
+  const cl = document.querySelector(".subbar [data-clear]"); if (cl) cl.hidden = !active;
 }
 
 function Companies() {
@@ -442,6 +555,7 @@ function render() {
   renderNav();
   $("#ptitle").textContent = PAGES[state.tab][0];
   $("#psub").textContent = PAGES[state.tab][1];
+  $("#pactions").innerHTML = Actions();
   $("#view").innerHTML = VIEWS[state.tab]();
   if (state.tab === "jobs") JobsList();
 }
@@ -453,10 +567,15 @@ function go(a) {
 }
 
 document.addEventListener("click", e => {
+  if (state.cust && !e.target.closest(".cust")) { state.cust = false; $("#pactions").innerHTML = Actions(); }
   const g = e.target.closest("[data-go]"); if (g) return go(g.dataset.go);
   const t = e.target.closest("[data-tab]"); if (t) return setTab(t.dataset.tab);
   if (e.target.closest("[data-hidenote]")) { state.noteHidden = true; return render(); }
-  const c = e.target.closest(".chip"); if (c) { state[c.dataset.g] = c.dataset.v; return render(); }
+  const wc = e.target.closest("[data-collapse]"); if (wc) { const d = WDEF.find(x => x.id === wc.dataset.collapse); store.w.collapsed[d.id] = !isCollapsed(d); persist(); return keepScroll(render); }
+  if (e.target.closest("[data-cust]")) { state.cust = !state.cust; return render(); }
+  if (e.target.closest("[data-wreset]")) { store.w = { hidden: {}, collapsed: {} }; persist(); return render(); }
+  const c = e.target.closest("[data-g]"); if (c) { state[c.dataset.g] = c.dataset.v; return render(); }
+  if (e.target.closest("[data-clear]")) { state.status = "all"; state.track = "all"; state.q = ""; $("#gsearch").value = ""; return render(); }
   const tg = e.target.closest("[data-toggle]");
   if (tg) { const id = +tg.dataset.toggle; state.open.has(id) ? state.open.delete(id) : state.open.add(id); return keepScroll(render); }
   if (e.target.closest("[data-expand]")) { const list = filteredJobs(); const all = list.every(j => state.open.has(j.id)); list.forEach(j => all ? state.open.delete(j.id) : state.open.add(j.id)); return render(); }
@@ -465,8 +584,10 @@ document.addEventListener("click", e => {
   if (cp) { try { navigator.clipboard.writeText(TEMPLATES[+cp.dataset.copy].body); cp.textContent = "Copied"; setTimeout(() => cp.textContent = "Copy", 1200); } catch (x) {} }
 });
 document.addEventListener("change", e => {
+  const f = e.target.closest("select[data-filter]"); if (f) { state[f.dataset.filter] = f.value; return render(); }
   const s = e.target.closest("select[data-job]"); if (s) { store.j[s.dataset.job] = s.value; persist(); return keepScroll(render); }
   const o = e.target.closest("select[data-ostat]"); if (o) { store.o[o.dataset.ostat] = o.value; persist(); return render(); }
+  const ws = e.target.closest("input[data-wshow]"); if (ws) { store.w.hidden[ws.dataset.wshow] = !ws.checked; persist(); return render(); }
   const n = e.target.closest("input[data-next]"); if (n) { store.n[n.dataset.next] = n.checked; persist(); return render(); }
   if (e.target.id === "sort") { state.sort = e.target.value; JobsList(); }
 });
@@ -478,7 +599,7 @@ $("#gsearch").addEventListener("input", e => {
 document.addEventListener("keydown", e => {
   const tag = document.activeElement.tagName;
   if (e.key === "/" && tag !== "INPUT" && tag !== "SELECT") { e.preventDefault(); $("#gsearch").focus(); }
-  if (e.key === "Escape") { state.q = ""; $("#gsearch").value = ""; $("#gsearch").blur(); render(); }
+  if (e.key === "Escape") { state.cust = false; state.q = ""; $("#gsearch").value = ""; $("#gsearch").blur(); render(); }
 });
 $("#theme").onclick = () => {
   const el = document.documentElement;
