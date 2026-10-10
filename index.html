@@ -200,7 +200,22 @@
   .track { position: relative; height: 8px; background: var(--soft); border-radius: 999px; overflow: hidden; }
   .track i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 999px; }
   .cust { position: relative; }
-  .menu { position: absolute; right: 0; top: calc(100% + 6px); z-index: 20; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,.12); padding: 10px 14px; min-width: 200px; }</style>
+  .menu { position: absolute; right: 0; top: calc(100% + 6px); z-index: 20; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,.12); padding: 10px 14px; min-width: 200px; }  .acc > summary, summary { list-style: none; }
+  .rmain.stack { grid-template-columns: minmax(0, 1fr) auto auto 14px; }
+  .rmain .two { display: flex; flex-direction: column; min-width: 0; }
+  .rmain .two .co, .rmain .two .role { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .rgrid { align-items: stretch; }
+  .rcard { display: flex; flex-direction: column; }
+  .rcard .rbody { flex: 1; }
+  .rfoot { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 14px; border-top: 1px solid var(--line); }
+  .btn.dl { background: var(--ink); color: var(--bg); border-color: var(--ink); font-weight: 500; text-decoration: none; }
+  .btn.dl:hover { opacity: .88; background: var(--ink); }
+  .scrollx { overflow-x: auto; }
+  .cmp { width: 100%; border-collapse: collapse; min-width: 640px; }
+  .cmp th, .cmp td { text-align: left; vertical-align: top; padding: 11px 14px; border-top: 1px solid var(--line); }
+  .cmp thead th { border-top: 0; font: 600 12px/1 "Poppins", sans-serif; color: var(--ink); padding-top: 4px; }
+  .cmp tbody th { width: 120px; font: 600 11px/1.4 "Poppins", sans-serif; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
+  .cmp td { line-height: 1.5; }</style>
 </head>
 <body>
 <div class="app">
@@ -237,9 +252,9 @@ window.PROFILE = {
 };
 
 window.RESUMES = [
-  { name: "ML", use: "AI, LLM, research and data science roles", headline: "AI/ML Engineer | Python, NLP, LLMs, RAG", summary: "NLP and LLM applications: Telugu text corpus and tokenizer work at VISWAM.AI with IIIT-H, plus a RAG based compliance copilot. Also ETL and dashboards at DRDO.", skills: "AI/ML first, then languages, data analysis, data engineering, BI", projects: "MAS-Compliance, Twitter Sentiment, Concrete Strength, NextGen-AI", file: "resumes/Chandana_Resume_ML.pdf" },
-  { name: "SWE", use: "Backend, full-stack and software roles", headline: "Software Engineer | Python, Java, SQL, Full-Stack, Data Systems", summary: "End-to-end systems: a containerized data platform at DRDO and a full-stack Next.js and TypeScript copilot on PostgreSQL and Redis.", skills: "Languages first, then data engineering, AI/ML, data analysis, BI", projects: "MAS-Compliance, NextGen-AI, Twitter Sentiment, Concrete Strength", file: "resumes/Chandana_Resume_SWE.pdf" },
-  { name: "Data", use: "Data analyst and BI roles", headline: "Data Analyst | SQL, Python, ETL, BI Dashboards", summary: "ETL pipelines, a SQL warehouse and BI dashboards at DRDO, with Python, SQL, EDA and statistical modelling turned into KPIs and insights.", skills: "Languages first, then data analysis, BI, data engineering, AI/ML", projects: "MAS-Compliance, Concrete Strength, Twitter Sentiment, NextGen-AI", file: "resumes/Chandana_Resume_Data.pdf" }
+  { name: "ML", use: "AI, LLM, research and data science roles", headline: "AI/ML Engineer | Python, NLP, LLMs, RAG", summary: "NLP and LLM applications: Telugu text corpus and tokenizer work at VISWAM.AI with IIIT-H, plus a RAG based compliance copilot. Also ETL and dashboards at DRDO.", skills: "AI/ML first, then languages, data analysis, data engineering, BI", projects: "MAS-Compliance, Twitter Sentiment, Concrete Strength, NextGen-AI", file: "files/Chandana_Resume_ML.pdf" },
+  { name: "SWE", use: "Backend, full-stack and software roles", headline: "Software Engineer | Python, Java, SQL, Full-Stack, Data Systems", summary: "End-to-end systems: a containerized data platform at DRDO and a full-stack Next.js and TypeScript copilot on PostgreSQL and Redis.", skills: "Languages first, then data engineering, AI/ML, data analysis, BI", projects: "MAS-Compliance, NextGen-AI, Twitter Sentiment, Concrete Strength", file: "files/Chandana_Resume_SWE.pdf" },
+  { name: "Data", use: "Data analyst and BI roles", headline: "Data Analyst | SQL, Python, ETL, BI Dashboards", summary: "ETL pipelines, a SQL warehouse and BI dashboards at DRDO, with Python, SQL, EDA and statistical modelling turned into KPIs and insights.", skills: "Languages first, then data analysis, BI, data engineering, AI/ML", projects: "MAS-Compliance, Concrete Strength, Twitter Sentiment, NextGen-AI", file: "files/Chandana_Resume_Data.pdf" }
 ];
 
 window.ALERTS = [
@@ -362,11 +377,13 @@ const Detail = j => {
 
 const JobRow = (j, opts = {}) => {
   const open = state.open.has(j.id);
-  const inner = opts.compact
+  const inner = opts.stack
+    ? `<span class="two"><span class="co">${esc(j.company)}</span><span class="role muted">${esc(j.role)}</span></span><span>${j.resume ? `<span class="tag">${esc(j.resume)}</span>` : ""}</span><span class="dt">${fmtDate(j.date)}</span><span class="chev">&rsaquo;</span>`
+    : opts.compact
     ? `<span class="co">${esc(j.company)}</span><span class="role">${esc(j.role)}</span><span>${j.resume ? `<span class="tag">${esc(j.resume)}</span>` : ""}</span><span class="dt">${fmtDate(j.date)}</span><span class="chev">&rsaquo;</span>`
     : `<span class="co">${esc(j.company)}</span><span class="role">${esc(j.role)}</span><span class="trk">${esc(j.track)}</span><span class="loc">${esc(j.location)}</span><span class="dt">${fmtDate(j.date)}</span><span class="chev">&rsaquo;</span>`;
   return `<div class="row"><div class="rhead">
-      <button class="rmain ${opts.compact ? "compact" : ""}" type="button" data-toggle="${j.id}" aria-expanded="${open}">${inner}</button>
+      <button class="rmain ${opts.compact ? "compact" : ""} ${opts.stack ? "stack" : ""}" type="button" data-toggle="${j.id}" aria-expanded="${open}">${inner}</button>
       ${opts.select === false ? "" : StatusSelect(j)}
     </div>${open ? Detail(j) : ""}</div>`;
 };
@@ -527,23 +544,21 @@ function Resumes() {
   const cos = [...new Set(used.map(j => j.company))];
   const cards = RESUMES.map(r => {
     const u = usedBy(r);
-    return `<section class="panel">
+    return `<section class="panel rcard">
       <div class="rh"><div><h3>${esc(r.name)}</h3><div class="muted small">${esc(r.use)}</div></div><span class="pill ${u.length ? "ok" : ""}">${u.length} used</span></div>
-      <div class="body flush">${u.length ? u.map(j => JobRow(j, { compact: true, select: false })).join("") : `<div class="empty small">Not used yet</div>`}</div>
-      <details class="acc"><summary>What is different</summary><div class="body"><dl class="def">
-        <dt>Headline</dt><dd>${esc(r.headline)}</dd>
-        <dt>Summary</dt><dd>${esc(r.summary)}</dd>
-        <dt>Skills order</dt><dd>${esc(r.skills)}</dd>
-        <dt>Project order</dt><dd>${esc(r.projects)}</dd>
-        <dt>File</dt><dd class="muted">${esc(r.file)} (kept locally, not published)</dd>
-      </dl></div></details></section>`;
+      <div class="rbody">${u.length ? u.map(j => JobRow(j, { stack: true, select: false })).join("") : `<div class="empty small">Not used yet</div>`}</div>
+      <div class="rfoot"><a class="btn dl" href="${esc(r.file)}" download>Download PDF</a><a class="link small" href="${esc(r.file)}" target="_blank" rel="noopener">Open</a></div>
+    </section>`;
   }).join("");
-  const matrix = `<section class="panel"><h2>Company by resume</h2><div class="body flush" style="overflow-x:auto"><table class="matrix"><thead><tr><th>Company</th>${names.map(n => `<th class="c">${esc(n)}</th>`).join("")}<th>Roles</th></tr></thead><tbody>
+  const attrs = [["Best for", "use"], ["Headline", "headline"], ["Summary", "summary"], ["Skills order", "skills"], ["Project order", "projects"]];
+  const compare = `<section class="panel"><h2>Compare versions</h2><div class="body flush scrollx"><table class="cmp"><thead><tr><th></th>${names.map(n => `<th>${esc(n)}</th>`).join("")}</tr></thead><tbody>
+    ${attrs.map(([l, k]) => `<tr><th scope="row">${l}</th>${RESUMES.map(r => `<td>${esc(r[k])}</td>`).join("")}</tr>`).join("")}
+    </tbody></table></div></section>`;
+  const matrix = `<section class="panel"><h2>Company by resume</h2><div class="body flush scrollx"><table class="matrix"><thead><tr><th>Company</th>${names.map(n => `<th class="c">${esc(n)}</th>`).join("")}<th>Roles</th></tr></thead><tbody>
     ${cos.map(c => { const rows = used.filter(j => j.company === c); return `<tr><td><b>${esc(c)}</b></td>${names.map(n => { const k = rows.filter(j => j.resume === n).length; return `<td class="c">${k ? `<span class="tag">${k}</span>` : `<span class="faint">0</span>`}</td>`; }).join("")}<td class="muted small">${rows.map(j => esc(j.role)).join(", ")}</td></tr>`; }).join("") || `<tr><td class="muted" colspan="${names.length + 2}">No applications yet.</td></tr>`}
     </tbody></table></div></section>`;
-  return `<div class="rgrid">${cards}</div>${matrix}`;
+  return `<div class="rgrid">${cards}</div><div class="stack">${compare}${matrix}</div>`;
 }
-
 const VIEWS = { overview: Overview, jobs: Jobs, companies: Companies, outreach: Outreach, resumes: Resumes };
 
 /* ============ SHELL ============ */
